@@ -16,17 +16,30 @@ import csv
 
 
 def main():
-    userQuery = str(input('Enter your query here: '))
-    #print(userQuery)
+    queryList = []
+    queryFile = open('RAQueries.txt', 'r')
+    lines = len(queryFile.readlines())
+    queryFile.close()
+
+#Re-Open file to read contents
+    queryFile = open('RAQueries.txt', 'r')
+
+    for i in range(1,4+1):
+        query  = str(queryFile.readline())
+        queryList.append(query)
+    
+    print(queryList)
+
+    queryFile.close()
 
     #Hardcoding arguments for now
-    selectFunction('PAY.csv', 'Payment', '>', '70')
+    #selectFunction('PAY.csv', 'Payment', '>', '70')
 
 
 #Results need to be stored in output file
 #This will be neede towards the end
     outputFile = open('RAoutput.csv', 'w')
-    outputFile.write(f'{userQuery}\n')
+    #outputFile.write(f'{userQuery}\n')
     #outputFile.write(f'{queryResult}\n\n')
 
     outputFile.close()
@@ -52,6 +65,7 @@ def intersectFunction(relationData1, relationData2):
 #JOIN FUNCTION
 def joinFunction(relationData1, relationData2, attribute1, attribute2, comparison):
     #This can simply call CROSS PRODUCT then SELECT
+    
     return 0
 
 #NATURAL JOIN FUNCTION
