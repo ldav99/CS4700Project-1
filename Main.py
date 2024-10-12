@@ -2,8 +2,13 @@
 #CS4700
 #Project 1
 
+
+#TODO add PROJECT, SELECT, INTERSECT, JOIN, *, UNION, Difference,CROSS PRODUCT
+
 import csv
 
+#This was just for testing how csv worked
+#All of this is not needed
 with open('ACTORS.csv', newline='') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     for row in spamreader:
@@ -15,9 +20,6 @@ def main():
     print(userQuery)
 
 
-
-
-
 #Results need to be stored in output file
 #This will be neede towards the end
     outputFile = open('RAoutput.csv', 'w')
@@ -25,5 +27,45 @@ def main():
     #outputFile.write(f'{queryResult}\n\n')
 
     outputFile.close()
+
+
+#SELECT FUNCTION
+def selectFunction(relationData, attribute, comparison, value):
+    return 0
+
+#PROJECT FUNCTION
+def projectFunction(relationData, atttribute):
+    return 0
+
+#INTERSECT FUNCTION
+def intersectFunction(relationData1, relationData2):
+    return 0
+
+#JOIN FUNCTION
+def joinFunction(relationData1, relationData2, attribute1, attribute2, comparison):
+    #This can simply call CROSS PRODUCT then SELECT
+    return 0
+
+#NATURAL JOIN FUNCTION
+def natJoinFunction(relationData1, relationData2):
+    #Natural JOIN is a JOIN with the attributes being those 
+    #named the same in each relation and the condition is the values are equal
+    return 0
+
+
+#UNION FUNCTION
+def unionFunction(relationData1, relationData2):
+    return 0
+
+#DIFFERENCE FUNCTION
+def differnceFunction(relationData1, relationData2):
+    return 0
+
+#CROSS PRODUCT FUNCTION
+def xProdFunction(relationData1, relationData2):
+    return 0
+
+
+
 
 main()
