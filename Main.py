@@ -18,6 +18,7 @@ with open('ACTORS.csv', newline='') as csvfile:
 def main():
     userQuery = str(input('Enter your query here: '))
     print(userQuery)
+    selectFunction('PAY.csv', 'nothing', 'nothing', 'nothing')
 
 
 #Results need to be stored in output file
@@ -31,7 +32,9 @@ def main():
 
 #SELECT FUNCTION
 def selectFunction(relationData, attribute, comparison, value):
-    return 0
+    relationFile = open(relationData , 'r')
+    returnOutput = relationFile.read()
+    print(returnOutput)
 
 #PROJECT FUNCTION
 def projectFunction(relationData, atttribute):
