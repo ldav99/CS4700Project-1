@@ -31,8 +31,9 @@ def main():
     queryFile.close()
 
 #Call parse function on all of the queries
-    for i in range(0,len(queryList)):
-        parseQuery(queryList[i])
+    # for i in range(0,len(queryList)):
+    #     parseQuery(queryList[i])
+    parseQuery(queryList[0])
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -48,8 +49,10 @@ def main():
 
 #PARSE FUNCTION
 def parseQuery(inputQuery):
-    print(inputQuery)
-
+    if re.search('W*(SELE_)W*', inputQuery):
+        relation = (re.search(r'\((.*?)\)',inputQuery).group(1)) + '.csv'
+        print(relation)
+        selectFunction(relation, 'Payment', '>', '70')
 
 #SELECT FUNCTION
 def selectFunction(relationData, attribute, comparison, value):
