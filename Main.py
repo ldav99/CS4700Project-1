@@ -6,6 +6,7 @@
 #TODO add PROJECT, SELECT, INTERSECT, JOIN, *, UNION, Difference,CROSS PRODUCT
 
 import csv
+import operator
 
 #This was just for testing how csv worked
 #All of this is not needed
@@ -33,13 +34,48 @@ def main():
 
 
 #SELECT FUNCTION
+    # The query: SELE_{Payment > 70} (PAY)
+    # relationData: PAY
+    # attribute: payment
+    # comparision: >
+    # value: 70
 def selectFunction(relationData, attribute, comparison, value):
-#Open the specifed file
+    # A list to return for this function
+    results = []
+
+    # A dictionary to handle a value assigned to comparison
+    operators = {
+        "<": operator.lt, 
+        "<=": operator.le,
+        "=": operator.eq,
+        "!=": operator.ne,
+        ">": operator.le,
+        ">=": operator.ge
+    }
+
+    # Check if "comparision" is a operator in the dictionary
+    # Otherwise, throw an error
+    try:
+        operation = operators.get(comparison)
+    except:
+        raise ValueError(f"selectFunction()::invalid operator -> {comparison}")
+
+    # Open the specifed file
     with open(relationData, newline='') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
-        for row in reader:
-            print(row['Payment'])
 
+        # Read the file row by row
+        for row in reader:
+            criterionValue = value;
+            currentValue = row[attribute]
+            # Perform the operation. If the operation is true,
+            # then add the current value to the "results" list
+            if operation(criterionValue, currentValue):
+                results.append(currentValue)
+                # print(currentValue)
+    
+    # print (results) # Uncomment this to test this function
+    return results
 
 #PROJECT FUNCTION
 def projectFunction(relationData, atttribute):
