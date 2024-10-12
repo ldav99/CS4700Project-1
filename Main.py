@@ -9,16 +9,18 @@ import csv
 
 #This was just for testing how csv worked
 #All of this is not needed
-with open('ACTORS.csv', newline='') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-    for row in spamreader:
-        print(', '.join(row))
+# with open('ACTORS.csv', newline='') as csvfile:
+#     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+#     for row in spamreader:
+#         print(', '.join(row))
 
 
 def main():
     userQuery = str(input('Enter your query here: '))
-    print(userQuery)
-    selectFunction('PAY.csv', 'nothing', 'nothing', 'nothing')
+    #print(userQuery)
+
+    #Hardcoding arguments for now
+    selectFunction('PAY.csv', 'Payment', '>', '70')
 
 
 #Results need to be stored in output file
@@ -32,9 +34,12 @@ def main():
 
 #SELECT FUNCTION
 def selectFunction(relationData, attribute, comparison, value):
-    relationFile = open(relationData , 'r')
-    returnOutput = relationFile.read()
-    print(returnOutput)
+#Open the specifed file
+    with open(relationData, newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+        for row in reader:
+            print(row['Payment'])
+
 
 #PROJECT FUNCTION
 def projectFunction(relationData, atttribute):
