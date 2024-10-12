@@ -6,6 +6,7 @@
 #TODO add PROJECT, SELECT, INTERSECT, JOIN, *, UNION, Difference,CROSS PRODUCT
 
 import csv
+import re
 
 #This was just for testing how csv worked
 #All of this is not needed
@@ -27,10 +28,11 @@ def main():
     for i in range(1,4+1):
         query  = str(queryFile.readline())
         queryList.append(query)
-    
-    print(queryList)
-
     queryFile.close()
+
+#Call parse function on all of the queries
+    for i in range(0,len(queryList)):
+        parseQuery(queryList[i])
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -38,11 +40,15 @@ def main():
 
 #Results need to be stored in output file
 #This will be neede towards the end
-    outputFile = open('RAoutput.csv', 'w')
+    #outputFile = open('RAoutput.csv', 'w')
     #outputFile.write(f'{userQuery}\n')
     #outputFile.write(f'{queryResult}\n\n')
+    #outputFile.close()
 
-    outputFile.close()
+
+#PARSE FUNCTION
+def parseQuery(inputQuery):
+    print(inputQuery)
 
 
 #SELECT FUNCTION
