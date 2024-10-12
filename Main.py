@@ -50,7 +50,7 @@ def main():
 #PARSE FUNCTION
 def parseQuery(inputQuery):
     if re.search('W*(SELE_)W*', inputQuery):
-        relation = (re.search(r'\((.*?)\)',inputQuery).group(1)) + '.csv'
+        relation = (re.search(r'\(([a-z]*?)\)', inputQuery, re.IGNORECASE).group(1)) + '.csv'
         print(relation)
         selectFunction(relation, 'Payment', '>', '70')
 
