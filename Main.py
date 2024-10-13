@@ -31,9 +31,11 @@ def main():
         queryList.append(query)
     queryFile.close()
 
+    print(projectFunction('PAY.csv', 'MNO'))
+
 #Call parse function on all of the queries
-    for i in range(0,len(queryList)):
-        parseQuery(queryList[i])
+    # for i in range(0,len(queryList)):
+    #     parseQuery(queryList[i])
     #parseQuery(queryList[0])
 
     #Hardcoding arguments for now
@@ -100,8 +102,22 @@ def selectFunction(relationData, attribute, comparison, value):
     return results
 
 #PROJECT FUNCTION
+#TODO Ask if this needs to work with multiple attributes or just one like in examples
 def projectFunction(relationData, atttribute):
-    return 0
+#This list will have all tuples called from column
+    allTuples = []
+
+    # Open the specifed file
+    with open(relationData, newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+        for row in reader:
+            #Add all tuples to the list
+            allTuples.append(row[atttribute])
+
+#By using the set() function it gets rid of all duplicates in the list
+    return set(allTuples)
+
+
 
 #INTERSECT FUNCTION
 def intersectFunction(relationData1, relationData2):
