@@ -31,7 +31,8 @@ def main():
         queryList.append(query)
     queryFile.close()
 
-    print(projectFunction('PAY.csv', 'MNO'))
+    #print(projectFunction('PAY.csv', 'MNO'))
+    print(unionFunction('',''))
 
 #Call parse function on all of the queries
     # for i in range(0,len(queryList)):
@@ -138,7 +139,29 @@ def natJoinFunction(relationData1, relationData2):
 
 #UNION FUNCTION
 def unionFunction(relationData1, relationData2):
-    return 0
+    tableOneRows = []
+    tableTwoRows = []
+    combinedRows = []
+
+    # Open the first specifed file
+    with open(relationData1, newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+        for row in reader:
+            #Add all tuples to the list
+            tableOneRows.append(row)
+    csvfile.close()    
+
+    # Open the second specifed file
+    with open(relationData1, newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=',')
+        for row in reader:
+            #Add all tuples to the list
+            tableTwoRows.append(row)
+    csvfile.close()  
+
+    combinedRows = tableOneRows.extend(tableTwoRows)
+
+    return set(combinedRows)
 
 #DIFFERENCE FUNCTION
 def differnceFunction(relationData1, relationData2):
