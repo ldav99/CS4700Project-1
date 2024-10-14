@@ -8,6 +8,7 @@
 import csv
 import operator
 import re
+import string
 
 #This was just for testing how csv worked
 #All of this is not needed
@@ -32,12 +33,14 @@ def main():
     queryFile.close()
 
     #print(projectFunction('PAY.csv', 'MNO'))
-    print(unionFunction('',''))
+    #print(unionFunction('',''))
 
 #Call parse function on all of the queries
-    # for i in range(0,len(queryList)):
-    #     parseQuery(queryList[i])
-    #parseQuery(queryList[0])
+    for i in range(0,len(queryList)):
+        queryList[i] = queryList[i].strip('\n')
+        queryList[i] = parseQuery(queryList[i])
+
+    print(queryList)
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -53,10 +56,14 @@ def main():
 
 #PARSE FUNCTION
 def parseQuery(inputQuery):
-    if re.search('W*(SELE_)W*', inputQuery):
-        relation = (re.search(r'\(([a-z]*?)\)',inputQuery, re.IGNORECASE).group(1)) + '.csv'
-        print(relation)
-        selectFunction(relation, 'Payment', '>', '70')
+    characterList = [">=", ">" , "!=" , "=", "<=", "<", "*"]
+
+    for char in string.punctuation:
+        if char in characterList:
+            continue
+        inputQuery = inputQuery.replace(char, ' ')
+
+    return(inputQuery)
 
 #SELECT FUNCTION
     # The query: SELE_{Payment > 70} (PAY)
