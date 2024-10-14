@@ -40,7 +40,8 @@ def main():
         queryList[i] = queryList[i].strip('\n')
         queryList[i] = parseQuery(queryList[i])
 
-    print(queryList)
+    #print(queryList)
+    callFunction(queryList[0])
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -54,9 +55,9 @@ def main():
     #outputFile.close()
 
 
-#PARSE FUNCTION
+#PARSE FUNCTION maybe rename this
 def parseQuery(inputQuery):
-    characterList = [">=", ">" , "!=" , "=", "<=", "<", "*"]
+    characterList = [">=", ">" , "!=" , "=", "<=", "<", "*", "-"]
 
     for char in string.punctuation:
         if char in characterList:
@@ -64,6 +65,38 @@ def parseQuery(inputQuery):
         inputQuery = inputQuery.replace(char, ' ')
 
     return(inputQuery)
+
+#
+def callFunction(inputQuery):
+    # keywords = {
+    #     "SELE ": selectFunction(),
+    #     "PROJ ": projectFunction(),
+    #     "U": unionFunction(),
+    #     " * ": natJoinFunction(),
+    #     " - ": differnceFunction(),
+    #     " x ": xProdFunction(),
+    #     " INTE ": intersectFunction(),
+    #     " JOIN ": joinFunction()
+    # }
+
+#Loop through the input query
+#TODO Ask about multiple statements in a query
+    splitQuery = inputQuery.split()
+    splitList = []
+
+    for word in splitQuery:
+        splitList.append(word)
+
+    if 'SELE' in splitList:
+        wordIndex = splitList.index('SELE')
+        attribute = splitList[wordIndex + 1]
+        comparison = splitList[wordIndex + 2]
+        value = splitList[wordIndex + 3]
+        addCSV = splitList[wordIndex + 4] + '.csv'
+
+        print(selectFunction(addCSV, attribute, comparison, value))
+
+    #print(splitList)
 
 #SELECT FUNCTION
     # The query: SELE_{Payment > 70} (PAY)
@@ -111,6 +144,7 @@ def selectFunction(relationData, attribute, comparison, value):
 
 #PROJECT FUNCTION
 #TODO Ask if this needs to work with multiple attributes or just one like in examples
+#ANSWER^: 
 def projectFunction(relationData, atttribute):
 #This list will have all tuples called from column
     allTuples = []
