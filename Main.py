@@ -32,7 +32,12 @@ def main():
         queryList[i] = parseQuery(queryList[i])
 
     #print(queryList)
-    callFunction(queryList[0])
+    #callFunction(queryList[0])
+
+    testOne = ['1','5','6','8','9', 'word']
+    testTwo = ['1','2','4','8','9']
+
+    print(differnceFunction(testOne, testTwo))
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -48,10 +53,10 @@ def main():
 
 #PARSE FUNCTION maybe rename this
 def parseQuery(inputQuery):
-    characterList = [">=", ">" , "!=" , "=", "<=", "<", "*", "-"]
+    operatorList = [">=", ">" , "!=" , "=", "<=", "<", "*", "-"]
 
     for char in string.punctuation:
-        if char in characterList:
+        if char in operatorList:
             continue
         inputQuery = inputQuery.replace(char, ' ')
 
@@ -59,19 +64,7 @@ def parseQuery(inputQuery):
 
 #
 def callFunction(inputQuery):
-    # keywords = {
-    #     "SELE ": selectFunction(),
-    #     "PROJ ": projectFunction(),
-    #     "U": unionFunction(),
-    #     " * ": natJoinFunction(),
-    #     " - ": differnceFunction(),
-    #     " x ": xProdFunction(),
-    #     " INTE ": intersectFunction(),
-    #     " JOIN ": joinFunction()
-    # }
-
 #Loop through the input query
-#TODO Ask about multiple statements in a query
     splitQuery = inputQuery.split()
     splitList = []
 
@@ -134,8 +127,6 @@ def selectFunction(relationData, attribute, comparison, value):
     return results
 
 #PROJECT FUNCTION
-#TODO Ask if this needs to work with multiple attributes or just one like in examples
-#ANSWER^: 
 def projectFunction(relationData, atttribute):
 #This list will have all tuples called from column
     allTuples = []
@@ -197,7 +188,28 @@ def unionFunction(relationData1, relationData2):
 
 #DIFFERENCE FUNCTION
 def differnceFunction(relationData1, relationData2):
-    return 0
+#Put first Realtional data into set 1
+    firstSet = []
+    firstSet.extend((relationData1))
+
+#Put second realational data into set 2
+    secondSet = []
+    secondSet.extend((relationData2))
+    
+
+#Sort so they are the same order
+    firstSet.sort()
+    secondSet.sort()
+
+    result = []
+
+#For every tuple in the first set, check if it is in the second set
+# if the tuple is in both, ignore it, if not, add it to the result set 
+    for tuple in firstSet:
+        if tuple not in secondSet:
+            result.append(tuple)
+
+    return result
 
 #CROSS PRODUCT FUNCTION
 def xProdFunction(relationData1, relationData2):
