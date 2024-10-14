@@ -3,19 +3,10 @@
 #Project 1
 
 
-#TODO add PROJECT, SELECT, INTERSECT, JOIN, *, UNION, Difference,CROSS PRODUCT
-
 import csv
 import operator
 import re
 import string
-
-#This was just for testing how csv worked
-#All of this is not needed
-# with open('ACTORS.csv', newline='') as csvfile:
-#     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-#     for row in spamreader:
-#         print(', '.join(row))
 
 
 def main():
