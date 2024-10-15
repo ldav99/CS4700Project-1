@@ -36,7 +36,7 @@ def main():
     testOne = ['1','5','6','8','9', 'word']
     testTwo = ['1','2','4','8','9']
 
-    print(differnceFunction(testOne, testTwo))
+    print(intersectFunction(testOne, testTwo))
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
@@ -144,7 +144,27 @@ def projectFunction(relationData, atttribute):
 
 #INTERSECT FUNCTION
 def intersectFunction(relationData1, relationData2):
-    return 0
+    firstSet = []
+    firstSet.extend((relationData1))
+
+#Put second realational data into set 2
+    secondSet = []
+    secondSet.extend((relationData2))
+    
+
+#Sort so they are the same order
+    firstSet.sort()
+    secondSet.sort()
+
+    result = []
+
+#For every tuple in the first set, check if it is in the second set
+# if the tuple is in both, add it, if not ignore it
+    for tuple in firstSet:
+        if tuple in secondSet:
+            result.append(tuple)
+
+    return result
 
 #JOIN FUNCTION
 def joinFunction(relationData1, relationData2, attribute1, attribute2, comparison):
