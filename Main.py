@@ -54,7 +54,6 @@ def main():
 def parseQuery(inputQuery):
     operatorList = [">=", ">" , "!=" , "=", "<=", "<", "*", "-"]
 
-# I knew what I wanted to do I just wasnt aware of string or replace
     for char in string.punctuation:
         if char in operatorList:
             continue
@@ -206,7 +205,6 @@ def differnceFunction(relationData1, relationData2):
 #For every tuple in the first set, check if it is in the second set
 # if the tuple is in both, ignore it, if not, add it to the result set 
 
-# I had the right idea just wrong syntax 
     for tuple in firstSet:
         if tuple not in secondSet:
             result.append(tuple)
