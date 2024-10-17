@@ -45,10 +45,11 @@ def main():
 
 
 #Results need to be stored in output file
-#This will be neede towards the end
-    #outputFile = open('RAoutput.csv', 'w')
-    #outputFile.write(f'{userQuery}\n')
-    #outputFile.write(f'{queryResult}\n\n')
+    # outputFile = open('RAoutput.csv', 'w')
+    # for i in range(0,len(queryList)):
+    #     outputFile.write(f'{queryList[i]}\n')
+    #     outputFile.write(f'{callFunction(queryList[i])}\n\n')
+    
     #outputFile.close()
 
 
