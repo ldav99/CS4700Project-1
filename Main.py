@@ -36,10 +36,12 @@ def main():
     testOne = ['1','5','6','8','9', 'word']
     testTwo = ['1','2','4','8','9']
 
-    print(intersectFunction(testOne, testTwo))
+    # print(intersectFunction(testOne, testTwo))
 
     #Hardcoding arguments for now
     #selectFunction('PAY.csv', 'Payment', '>', '70')
+    # xProdFunction('ACTORS.csv', 'MOVIES.csv')
+    natJoinFunction('MOVIES.csv', 'PAY.csv')
 
 
 #Results need to be stored in output file
@@ -114,7 +116,7 @@ def selectFunction(relationData, attribute, comparison, value):
 
         # Read the file row by row
         for row in reader:
-            criterionValue = value;
+            criterionValue = value
             currentValue = row[attribute]
             # Perform the operation. If the operation is true,
             # then add the current value to the "results" list
@@ -176,7 +178,45 @@ def joinFunction(relationData1, relationData2, attribute1, attribute2, compariso
 def natJoinFunction(relationData1, relationData2):
     #Natural JOIN is a JOIN with the attributes being those 
     #named the same in each relation and the condition is the values are equal
-    return 0
+    with open(relationData1, newline='') as csvfile:
+        reader1 = csv.DictReader(csvfile, delimiter=',')
+        headers1 = reader1.fieldnames # attributes of relationalData1
+        rows1 = [] # a list for rows in relationalData1
+        for row in reader1:
+            rows1.append(list(row.values()))
+    
+    with open(relationData2, newline='') as csvfile:
+        reader2 = csv.DictReader(csvfile, delimiter=',')
+        headers2 = reader2.fieldnames # attributes of relationalData2
+        rows2 = [] # a list for rows in relationalData2
+        for row in reader2:
+            rows2.append(list(row.values()))
+
+    print(headers1)
+    print(headers2)
+    commonAttributes = []
+    for attribute in headers1:
+        if attribute in headers2:
+            commonAttributes.append(attribute)
+    # print(commonAttributes)
+    # print(rows1)
+
+    indexList = []
+    for commonAttribute in commonAttributes:
+        index = headers1.index(commonAttribute)
+        indexList.append(index)
+    # print(indexList)
+
+    result = []
+    result.append(commonAttributes)
+    for row in rows1:
+        mapping = []
+        for index in indexList:
+            mapping.append(row[index])
+        result.append(mapping)    
+    print(result)
+    
+    return result
 
 
 #UNION FUNCTION
@@ -194,7 +234,7 @@ def unionFunction(relationData1, relationData2):
     csvfile.close()    
 
     # Open the second specifed file
-    with open(relationData1, newline='') as csvfile:
+    with open(relationData2, newline='') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
         for row in reader:
             #Add all tuples to the list
@@ -233,9 +273,36 @@ def differnceFunction(relationData1, relationData2):
 
 #CROSS PRODUCT FUNCTION
 def xProdFunction(relationData1, relationData2):
-    return 0
+    with open(relationData1, newline='') as csvfile:
+        reader1 = csv.DictReader(csvfile, delimiter=',')
+        headers1 = reader1.fieldnames # attributes of relationalData1
+        rows1 = [] # a list for rows in relationalData1
+        for row in reader1:
+            rows1.append(list(row.values()))
+    
+    with open(relationData2, newline='') as csvfile:
+        reader2 = csv.DictReader(csvfile, delimiter=',')
+        headers2 = reader2.fieldnames # attributes of relationalData2
+        rows2 = [] # a list for rows in relationalData2
+        for row in reader2:
+            rows2.append(list(row.values()))
 
+    attributes = [] # combine the headers of both relations
+    attributes.extend(headers1)
+    attributes.extend(headers2)
+    
+    combined = []
+    combined.append(attributes) # add attributes
+    for row1 in rows1:
+        for row2 in rows2:
+            # print(row1)
+            # print(row2)
+            # print(row1 + row2)
+            combined.append(row1 + row2) # add rows from each relation
 
+    # print(combined)
+    # print(len(combined))
+    return combined
 
-
-main()
+if __name__=="__main__":
+    main()
