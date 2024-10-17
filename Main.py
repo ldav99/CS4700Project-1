@@ -171,8 +171,10 @@ def intersectFunction(relationData1, relationData2):
 #JOIN FUNCTION
 def joinFunction(relationData1, relationData2, attribute1, attribute2, comparison):
     #This can simply call CROSS PRODUCT then SELECT
-    
-    return 0
+    xProdResult = xProdFunction(relationData1, relationData2)
+    result = selectFunction(xProdResult, attribute1, comparison, attribute2)
+
+    return result
 
 #NATURAL JOIN FUNCTION
 def natJoinFunction(relationData1, relationData2):
