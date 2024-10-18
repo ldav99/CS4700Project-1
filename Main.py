@@ -137,24 +137,24 @@ def callFunction(inputQuery):
     splitList = []
 
     firstHalf = []
+    secondHalf = []
 
     for word in splitQuery:
         splitList.append(word)
 
+    print(firstHalf)
     print(splitList)
 
     if 'U' in splitList or ' - ' in splitList or ' INTE ' in splitList:
         wordIndex = splitList.index('U')
 
-        for word in splitList:
-            if word != 'U':
-                firstHalf.append(word)
-            else:
-                break
+        firstHalf = splitList[:wordIndex]
+        secondHalf = splitList[wordIndex+1:]
 
     relation = len(firstHalf)
     theRelation = firstHalf[relation-1]
-    print(firstHalf)   
+    print(firstHalf) 
+    print(secondHalf)  
 
 
     if 'SELE' in firstHalf:
@@ -166,12 +166,13 @@ def callFunction(inputQuery):
         addCSV = relations.get(theRelation) 
 
         #print(addCSV, attribute, comparison, value)
-        selectResults = selectFunction(addCSV, attribute, comparison, value)
+        selectResults = selectFunction(addCSV, attributes, comparison, value)
 
         if 'PROJ' in firstHalf:
             wordIndex = splitList.index('PROJ')
             projAttribute = []
             projAttribute.append(splitList[wordIndex + 1])
+            print(selectResults)
             return projectFunction(selectResults, projAttribute)
         else:
             return selectResults
