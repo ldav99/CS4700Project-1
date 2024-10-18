@@ -55,7 +55,7 @@ def main():
 
 
     query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Swanson'} (ACTORS)))")
-    callFunction(query)
+    print(callFunction(query))
 
 
 
@@ -129,7 +129,7 @@ def parseQuery(inputQuery):
 #
 def callFunction(inputQuery):
     relations = {
-        "PAY": PAYTwo
+        "PAY": PAY
     }
 
 #Loop through the input query
@@ -154,7 +154,6 @@ def callFunction(inputQuery):
 
     relation = len(firstHalf)
     theRelation = firstHalf[relation-1]
-    print(theRelation)
     print(firstHalf)   
 
 
@@ -167,7 +166,15 @@ def callFunction(inputQuery):
         addCSV = relations.get(theRelation) 
 
         #print(addCSV, attribute, comparison, value)
-        print(selectFunction(addCSV, attribute, comparison, value))
+        selectResults = selectFunction(addCSV, attribute, comparison, value)
+
+        if 'PROJ' in firstHalf:
+            wordIndex = splitList.index('PROJ')
+            projAttribute = []
+            projAttribute.append(splitList[wordIndex + 1])
+            return projectFunction(selectResults, projAttribute)
+        else:
+            return selectResults
 
     #print(splitList)
 
