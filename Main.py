@@ -166,7 +166,7 @@ def callFunction(inputQuery):
         addCSV = relations.get(theRelation) 
 
         #print(addCSV, attribute, comparison, value)
-        selectResults = selectFunction(addCSV, attribute, comparison, value)
+        selectResults = selectFunction(addCSV, attributes, comparison, value)
 
         if 'PROJ' in firstHalf:
             wordIndex = splitList.index('PROJ')
@@ -205,18 +205,18 @@ def selectFunction(relationData, attributes, comparison, value):
 
     # Get the index of the target attribute(column)
     index_list = []
-    result_attributes = []
+    target_attributes = []
     for column in relationData[0]: # attribute row = relationaData[0]
         for attribute in attributes:
             if column == attribute:
-                result_attributes.append(column)
+                target_attributes.append(column)
                 index = relationData[0].index(column)
                 index_list.append(index)
-    results.append(result_attributes)
+    results.append(relationData[0])
     #print(results)
 
     # Read the 2-D array(relationData) row by row
-    mapping = [] # temporal row
+    # mapping = [] # temporal row
     for row in relationData[1:]:
         for column_index in index_list:
             criterionValue = value
@@ -224,13 +224,13 @@ def selectFunction(relationData, attributes, comparison, value):
             # Perform the operation. If the operation is true,
             # then add the current value to the "results" list
             if operation(int(criterionValue), int(currentValue)):
-                mapping.append(currentValue) 
-                results.append(mapping)
+                # mapping.append(currentValue) 
+                results.append(row)
             # else:
             #     mapping.append("")
             #     results.append(mapping)
         # results.extend(mapping)
-        mapping = [] # Clear to contain new data
+        # mapping = [] # Clear to contain new data
     
     # print(results) # Uncomment this to test this function
     return results
@@ -265,7 +265,7 @@ def projectFunction(relationData, attributes):
         results.append(mapping)
         mapping = [] # Clear to contain new data
     
-    print(results) # Uncomment this to test this function
+    # print(results) # Uncomment this to test this function
     return results
 
 
