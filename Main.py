@@ -145,11 +145,13 @@ def callFunction(inputQuery):
     print(firstHalf)
     print(splitList)
 
-    if 'U' in splitList or ' - ' in splitList or ' INTE ' in splitList:
+    if 'U' in splitList:
         wordIndex = splitList.index('U')
 
         firstHalf = splitList[:wordIndex]
         secondHalf = splitList[wordIndex+1:]
+
+    firstHalfResult = []
 
     relation = len(firstHalf)
     theRelation = firstHalf[relation-1]
@@ -173,9 +175,30 @@ def callFunction(inputQuery):
             projAttribute = []
             projAttribute.append(splitList[wordIndex + 1])
             print(selectResults)
-            return projectFunction(selectResults, projAttribute)
+            firstHalfResult =  projectFunction(selectResults, projAttribute)
         else:
             return selectResults
+    
+    elif secondHalf != '':
+        if 'SELE' in secondHalf:
+            wordIndex = secondHalf.index('SELE')
+            attributes = []
+            attributes.append(secondHalf[wordIndex + 1])
+            comparison = secondHalf[wordIndex + 2]
+            value = secondHalf[wordIndex + 3]
+            addCSV = relations.get(theRelation) 
+
+            #print(addCSV, attribute, comparison, value)
+            selectResults = selectFunction(addCSV, attributes, comparison, value)
+
+            if 'PROJ' in firstHalf:
+                wordIndex = splitList.index('PROJ')
+                projAttribute = []
+                projAttribute.append(splitList[wordIndex + 1])
+                print(selectResults)
+                secondHalfResult =  projectFunction(selectResults, projAttribute)
+
+    return unionFunction(firstHalfResult, secondHalfResult)
 
     #print(splitList)
 
