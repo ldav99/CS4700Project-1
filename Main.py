@@ -159,8 +159,8 @@ def callFunction(inputQuery):
 
     if 'SELE' in firstHalf:
         wordIndex = splitList.index('SELE')
-        attribute = []
-        attribute.append(splitList[wordIndex + 1])
+        attributes = []
+        attributes.append(splitList[wordIndex + 1])
         comparison = splitList[wordIndex + 2]
         value = splitList[wordIndex + 3]
         addCSV = relations.get(theRelation) 
@@ -224,10 +224,12 @@ def selectFunction(relationData, attributes, comparison, value):
             # Perform the operation. If the operation is true,
             # then add the current value to the "results" list
             if operation(int(criterionValue), int(currentValue)):
-               mapping.append(currentValue) 
-            else:
-                mapping.append([])
-        results.append(mapping)
+                mapping.append(currentValue) 
+                results.append(mapping)
+            # else:
+            #     mapping.append("")
+            #     results.append(mapping)
+        # results.extend(mapping)
         mapping = [] # Clear to contain new data
     
     # print(results) # Uncomment this to test this function
