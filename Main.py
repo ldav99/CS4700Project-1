@@ -41,20 +41,18 @@ def main():
 
     #Hardcoding arguments for now
 
-# Open the specifed file
-    global PAYTwo 
-    PAYTwo = []
-    #with open('PAY.csv', newline='') as csvfile:
-    with open('PAY.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=' ')
+    # Open the specifed file
+    global PAY 
+    global MOVIES
+    global ACTORS
+    PAY = './PAY.csv'
+    MOVIES = './MOVIES.csv'
+    ACTORS = './ACTORS.csv'
 
-        # Read the file row by row
-        for row in reader:
-            PAYTwo.append(row)
+    PAY = reformat_to_2Darray(PAY)
+    MOVIES = reformat_to_2Darray(MOVIES)
+    ACTORS = reformat_to_2Darray(ACTORS)
 
-
-    #print (PAYTwo[1:4])
-    #print(PAYTwo)
 
     query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Swanson'} (ACTORS)))")
     callFunction(query)
@@ -112,6 +110,10 @@ def main():
     
     #outputFile.close()
 
+def reformat_to_2Darray(csvfile):
+    data = list(csv.reader(open(csvfile)))
+    
+    return data
 
 #PARSE FUNCTION maybe rename this
 def parseQuery(inputQuery):
