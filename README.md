@@ -1,5 +1,5 @@
 # CS4700 Project 1
-Jinho Nam and Luke Davidson\
+Jinho Nam and Luke Davidson
 
 
 ## How to run the program
