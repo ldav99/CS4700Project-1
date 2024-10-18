@@ -27,9 +27,9 @@ def main():
     #print(unionFunction('',''))
 
 #Call parse function on all of the queries
-    for i in range(0,len(queryList)):
-        queryList[i] = queryList[i].strip('\n')
-        queryList[i] = parseQuery(queryList[i])
+    # for i in range(0,len(queryList)):
+    #     queryList[i] = queryList[i].strip('\n')
+    #     queryList[i] = parseQuery(queryList[i])
 
     #print(queryList)
     #callFunction(queryList[0])
@@ -42,56 +42,56 @@ def main():
     #Hardcoding arguments for now
 
 # Open the specifed file
+    global PAYTwo 
     PAYTwo = []
     #with open('PAY.csv', newline='') as csvfile:
     with open('PAY.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ')
 
-        headings = next(reader)
-
-
-        PAYTwo.append(headings)
         # Read the file row by row
         for row in reader:
             PAYTwo.append(row)
 
 
     #print (PAYTwo[1:4])
-    print(PAYTwo)
+    #print(PAYTwo)
+
+    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Swanson'} (ACTORS)))")
+    callFunction(query)
 
 
 
     # selectFunction('PAY.csv', 'Payment', '>', '70')
-    PAY = [["ANO","MNO","Payment"],
-           ["A1","M1",79],
-           ["A1","M2",80],
-           ["A2","M2",83],
-           ["A2","M3",98],
-           ["A3","M3",98]]
-    # MONEY = [["ANO","MNO","Payment"],
-    #          ["A1","M1",79],
-    #          ["A1","M2",80],
-    #          ["Y9","Z9",99]]
-    Student = [['SID','Name','Std'],
-              [101,'Alex',10],
-              [102,'Maria',11]]
-    Subjects = [['Class','Subject'],
-                [10,'Math'],
-                [10,'English'],
-                [11,'Music'],
-                [11,'Sports']]
-    Courses = [['CID','Course','Dept'],
-               ['CS01','Database','CS'],
-               ['ME01','Mechanics','ME'],
-               ['EE01','Electronics','EE']]
-    HoD = [['Dept','Head'],
-           ['CS','Alex'],
-           ['ME','Maya'],
-           ['EE','Mira']]
+    # PAY = [["ANO","MNO","Payment"],
+    #        ["A1","M1",79],
+    #        ["A1","M2",80],
+    #        ["A2","M2",83],
+    #        ["A2","M3",98],
+    #        ["A3","M3",98]]
+    # # MONEY = [["ANO","MNO","Payment"],
+    # #          ["A1","M1",79],
+    # #          ["A1","M2",80],
+    # #          ["Y9","Z9",99]]
+    # Student = [['SID','Name','Std'],
+    #           [101,'Alex',10],
+    #           [102,'Maria',11]]
+    # Subjects = [['Class','Subject'],
+    #             [10,'Math'],
+    #             [10,'English'],
+    #             [11,'Music'],
+    #             [11,'Sports']]
+    # Courses = [['CID','Course','Dept'],
+    #            ['CS01','Database','CS'],
+    #            ['ME01','Mechanics','ME'],
+    #            ['EE01','Electronics','EE']]
+    # HoD = [['Dept','Head'],
+    #        ['CS','Alex'],
+    #        ['ME','Maya'],
+    #        ['EE','Mira']]
               
     # selectFunction(PAY, ['Payment'], '>', '70')
     # selectFunction(PAY, ['Payment','Money'], '>', '70')
-    # projectFunction(PAY, ['ANO'])
+    #projectFunction(PAY, ['ANO'])
     # projectFunction(PAY, ['ANO','MNO'])
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
@@ -126,20 +126,45 @@ def parseQuery(inputQuery):
 
 #
 def callFunction(inputQuery):
+    relations = {
+        "PAY": PAYTwo
+    }
+
 #Loop through the input query
     splitQuery = inputQuery.split()
     splitList = []
 
+    firstHalf = []
+
     for word in splitQuery:
         splitList.append(word)
 
-    if 'SELE' in splitList:
+    print(splitList)
+
+    if 'U' in splitList or ' - ' in splitList or ' INTE ' in splitList:
+        wordIndex = splitList.index('U')
+
+        for word in splitList:
+            if word != 'U':
+                firstHalf.append(word)
+            else:
+                break
+
+    relation = len(firstHalf)
+    theRelation = firstHalf[relation-1]
+    print(theRelation)
+    print(firstHalf)   
+
+
+    if 'SELE' in firstHalf:
         wordIndex = splitList.index('SELE')
-        attribute = splitList[wordIndex + 1]
+        attribute = []
+        attribute.append(splitList[wordIndex + 1])
         comparison = splitList[wordIndex + 2]
         value = splitList[wordIndex + 3]
-        addCSV = splitList[wordIndex + 4] + '.csv'
+        addCSV = relations.get(theRelation) 
 
+        #print(addCSV, attribute, comparison, value)
         print(selectFunction(addCSV, attribute, comparison, value))
 
     #print(splitList)
