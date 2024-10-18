@@ -40,6 +40,27 @@ def main():
     # print(intersectFunction(testOne, testTwo))
 
     #Hardcoding arguments for now
+
+# Open the specifed file
+    PAYTwo = []
+    #with open('PAY.csv', newline='') as csvfile:
+    with open('PAY.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=' ')
+
+        headings = next(reader)
+
+
+        PAYTwo.append(headings)
+        # Read the file row by row
+        for row in reader:
+            PAYTwo.append(row)
+
+
+    #print (PAYTwo[1:4])
+    print(PAYTwo)
+
+
+
     # selectFunction('PAY.csv', 'Payment', '>', '70')
     PAY = [["ANO","MNO","Payment"],
            ["A1","M1",79],
@@ -80,7 +101,7 @@ def main():
     # natJoinFunction('MOVIES.csv', 'PAY.csv') 
     # joinFunction(MOVIES, PAY, "MNO", "MNO", "=") # has an issue in select()
     # joinFunction(Student, Subjects, "Std", "Class", "=")
-    print(natJoinFunction(Courses, HoD))
+    #print(natJoinFunction(Courses, HoD))
 
 
 #Results need to be stored in output file
