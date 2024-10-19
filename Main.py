@@ -171,7 +171,10 @@ def callFunction(inputQuery):
         print(secondHalf)
     else:
         firstHalf.extend(splitList)
+        firstrelation = len(firstHalf)
+        thefirstRelation = firstHalf[firstrelation-1]
 
+    print(firstHalf)
 
     if 'SELE' in firstHalf:
         wordIndex = splitList.index('SELE')
