@@ -160,8 +160,10 @@ def callFunction(inputQuery):
 
     firstHalfResult = []
 
-    relation = len(firstHalf)
-    theRelation = firstHalf[relation-1]
+    firstrelation = len(firstHalf)
+    thefirstRelation = firstHalf[firstrelation-1]
+    secondrelation = len(secondHalf)
+    thesecondRelation = secondHalf[secondrelation-1]
     print(firstHalf) 
     print(secondHalf)  
 
@@ -172,7 +174,7 @@ def callFunction(inputQuery):
         attributes.append(splitList[wordIndex + 1])
         comparison = splitList[wordIndex + 2]
         value = splitList[wordIndex + 3]
-        addCSV = relations.get(theRelation) 
+        addCSV = relations.get(thefirstRelation) 
 
         #print(addCSV, attribute, comparison, value)
         selectResults = selectFunction(addCSV, attributes, comparison, value)
@@ -190,11 +192,10 @@ def callFunction(inputQuery):
         print(secondHalf)
         if 'SELE' in secondHalf:
             wordIndex = secondHalf.index('SELE')
-            attributes = []
-            attributes.append(secondHalf[wordIndex + 1])
+            attributes = secondHalf[wordIndex + 1]
             comparison = secondHalf[wordIndex + 2]
             value = secondHalf[wordIndex + 3]
-            addCSV = relations.get(theRelation) 
+            addCSV = relations.get(thesecondRelation) 
 
             print(addCSV, attributes, comparison, value)
             selectResults = selectFunction(addCSV, attributes, comparison, value)
@@ -202,12 +203,11 @@ def callFunction(inputQuery):
 
             if 'PROJ' in secondHalf:
                 wordIndex = splitList.index('PROJ')
-                projAttribute = []
-                projAttribute.append(splitList[wordIndex + 1])
+                projAttribute = splitList[wordIndex + 1]
                 #print(selectResults)
                 secondHalfResult =  projectFunction(selectResults, projAttribute)
 
-    #print(secondHalfResult)
+    print(secondHalfResult)
 
     #return unionFunction(firstHalfResult, secondHalfResult)
 
