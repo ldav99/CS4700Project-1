@@ -184,7 +184,9 @@ def callFunction(inputQuery):
         else:
             return selectResults
     
-    elif len(secondHalf) != 0:
+    if len(secondHalf) != 0:
+        print("SECOND HALF!!!!")
+        print(secondHalf)
         if 'SELE' in secondHalf:
             wordIndex = secondHalf.index('SELE')
             attributes = []
@@ -195,6 +197,7 @@ def callFunction(inputQuery):
 
             print(addCSV, attributes, comparison, value)
             selectResults = selectFunction(addCSV, attributes, comparison, value)
+            print(selectResults)
 
             if 'PROJ' in secondHalf:
                 wordIndex = splitList.index('PROJ')
@@ -379,7 +382,7 @@ def joinFunction(relationData1, relationData2, attribute1, attribute2, compariso
             results.append(row)
         
     # https://www.tutorialspoint.com/dbms/database_joins.htm
-    print(results)
+    #print(results)
     return results
 
 #NATURAL JOIN FUNCTION
