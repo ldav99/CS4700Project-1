@@ -16,7 +16,7 @@ Jinho Nam and Luke Davidson
     * DIFFERENCE
     * CROSS PRODUCT
 
-    - All of the above operators work individually on based on hard-coded queries, such as 
+    - All of the above operators work individually based on hard-coded queries, such as 
         > selectFunction(PAY, ['Payment'], '>', '70'), 
         > projectFunction(PAY, 'ANO')
         > intersectFunction(PAY, MOVIES)
@@ -35,7 +35,7 @@ Jinho Nam and Luke Davidson
 
 ## Screenshots 
 - Select operator in relational algebra
-![SELECT-relational-algebra](./select.png)
+![SELECT-relational-algebra](./select-operator.png)
 
 - Left side of union operator in relational algebra
     (underlined blue line is the left query)
