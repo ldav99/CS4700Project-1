@@ -54,11 +54,11 @@ def main():
     ACTORS = reformat_to_2Darray(ACTORS)
 
 
-    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Swanson'} (ACTORS)))")
-    # print(callFunction(query))
+    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME ='Rivers'} (ACTORS)))")
+    print(callFunction(query))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
-    print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
+    #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
 
     # selectFunction('PAY.csv', 'Payment', '>', '70')
