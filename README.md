@@ -23,7 +23,7 @@ Jinho Nam and Luke Davidson
         > differnceFunction(PAY, MOVIES)
         > xProdFunction(PAY, MOVIES)
         > unionFunction(PAY, MOVIES)
-        > natJoinFunction('MOVIES.csv', 'PAY.csv') 
+        > natJoinFunction(MOVIES, PAY) 
         > joinFunction(MOVIES, PAY, "MNO", "MNO", "=")
     
     - Some of the queries work on relational algebra format, such as
