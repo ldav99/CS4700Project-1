@@ -54,7 +54,7 @@ def main():
     ACTORS = reformat_to_2Darray(ACTORS)
 
 
-    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Swanson'} (ACTORS)))")
+    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME='Rivers'} (ACTORS)))")
     print(callFunction(query))
 
 
@@ -129,7 +129,9 @@ def parseQuery(inputQuery):
 #
 def callFunction(inputQuery):
     relations = {
-        "PAY": PAY
+        "PAY": PAY,
+        "ACTORS": ACTORS,
+        "MOVIES": MOVIES
     }
 
 #Loop through the input query
@@ -138,6 +140,9 @@ def callFunction(inputQuery):
 
     firstHalf = []
     secondHalf = []
+
+    selectResults = []
+    secondHalfResult = []
 
     for word in splitQuery:
         splitList.append(word)
@@ -174,12 +179,12 @@ def callFunction(inputQuery):
             wordIndex = splitList.index('PROJ')
             projAttribute = []
             projAttribute.append(splitList[wordIndex + 1])
-            print(selectResults)
             firstHalfResult =  projectFunction(selectResults, projAttribute)
+            print(firstHalfResult)
         else:
             return selectResults
     
-    elif secondHalf != '':
+    elif len(secondHalf) != 0:
         if 'SELE' in secondHalf:
             wordIndex = secondHalf.index('SELE')
             attributes = []
@@ -188,17 +193,19 @@ def callFunction(inputQuery):
             value = secondHalf[wordIndex + 3]
             addCSV = relations.get(theRelation) 
 
-            #print(addCSV, attribute, comparison, value)
+            print(addCSV, attributes, comparison, value)
             selectResults = selectFunction(addCSV, attributes, comparison, value)
 
-            if 'PROJ' in firstHalf:
+            if 'PROJ' in secondHalf:
                 wordIndex = splitList.index('PROJ')
                 projAttribute = []
                 projAttribute.append(splitList[wordIndex + 1])
-                print(selectResults)
+                #print(selectResults)
                 secondHalfResult =  projectFunction(selectResults, projAttribute)
 
-    return unionFunction(firstHalfResult, secondHalfResult)
+    #print(secondHalfResult)
+
+    #return unionFunction(firstHalfResult, secondHalfResult)
 
     #print(splitList)
 
