@@ -179,8 +179,7 @@ def callFunction(inputQuery):
 
         if 'PROJ' in firstHalf:
             wordIndex = splitList.index('PROJ')
-            projAttribute = []
-            projAttribute.append(splitList[wordIndex + 1])
+            projAttribute = splitList[wordIndex + 1]
             firstHalfResult =  projectFunction(selectResults, projAttribute)
             print(firstHalfResult)
         else:
