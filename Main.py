@@ -57,6 +57,9 @@ def main():
     query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME ='Rivers'} (ACTORS)))")
     print(callFunction(query))
 
+    queryTwo = parseQuery("SELE_{Payment > 70} (PAY)")
+    print(callFunction(queryTwo))
+
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
@@ -130,6 +133,7 @@ def parseQuery(inputQuery):
 
 #
 def callFunction(inputQuery):
+    print('start')
     relations = {
         "PAY": PAY,
         "ACTORS": ACTORS,
@@ -149,7 +153,6 @@ def callFunction(inputQuery):
     for word in splitQuery:
         splitList.append(word)
 
-    print(firstHalf)
     print(splitList)
 
     if 'U' in splitList:
@@ -158,14 +161,16 @@ def callFunction(inputQuery):
         firstHalf = splitList[:wordIndex]
         secondHalf = splitList[wordIndex+1:]
 
-    firstHalfResult = []
+        firstHalfResult = []
 
-    firstrelation = len(firstHalf)
-    thefirstRelation = firstHalf[firstrelation-1]
-    secondrelation = len(secondHalf)
-    thesecondRelation = secondHalf[secondrelation-1]
-    print(firstHalf) 
-    print(secondHalf)  
+        firstrelation = len(firstHalf)
+        thefirstRelation = firstHalf[firstrelation-1]
+        secondrelation = len(secondHalf)
+        thesecondRelation = secondHalf[secondrelation-1]
+        print(firstHalf) 
+        print(secondHalf)
+    else:
+        firstHalf.extend(splitList)
 
 
     if 'SELE' in firstHalf:
