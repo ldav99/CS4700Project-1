@@ -15,7 +15,7 @@ def main():
     lines = len(queryFile.readlines())
     queryFile.close()
 
-#Re-Open file to read contents
+    # Re-Open file to read contents
     queryFile = open('RAQueries.txt', 'r')
 
     for i in range(1,4+1):
@@ -26,7 +26,7 @@ def main():
     #print(projectFunction('PAY.csv', 'MNO'))
     #print(unionFunction('',''))
 
-#Call parse function on all of the queries
+    # Call parse function on all of the queries
     # for i in range(0,len(queryList)):
     #     queryList[i] = queryList[i].strip('\n')
     #     queryList[i] = parseQuery(queryList[i])
@@ -64,21 +64,16 @@ def main():
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
-
-    # selectFunction('PAY.csv', 'Payment', '>', '70')
               
     # selectFunction(PAY, ['Payment'], '>', '70')
-    # selectFunction(PAY, ['Payment','Money'], '>', '70')
-    #projectFunction(PAY, ['ANO'])
-    # projectFunction(PAY, ['ANO','MNO'])
+    #projectFunction(PAY, 'ANO')
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
     # xProdFunction(PAY, MOVIES)
     # unionFunction(PAY, MOVIES)
-    # natJoinFunction('MOVIES.csv', 'PAY.csv') 
-    # joinFunction(MOVIES, PAY, "MNO", "MNO", "=") # has an issue in select()
+    # natJoinFunction(MOVIES, PAY) 
+    # joinFunction(MOVIES, PAY, "MNO", "MNO", "=")
     # joinFunction(Student, Subjects, "Std", "Class", "=")
-    #print(natJoinFunction(Courses, HoD))
 
 
 #Results need to be stored in output file
