@@ -55,42 +55,17 @@ def main():
 
 
     query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME ='Rivers'} (ACTORS)))")
+    print(f'{query}:')
     print(callFunction(query))
 
     queryTwo = parseQuery("SELE_{Payment > 70} (PAY)")
+    print(f'{queryTwo}:')
     print(callFunction(queryTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
-
     # selectFunction('PAY.csv', 'Payment', '>', '70')
-    # PAY = [["ANO","MNO","Payment"],
-    #        ["A1","M1",79],
-    #        ["A1","M2",80],
-    #        ["A2","M2",83],
-    #        ["A2","M3",98],
-    #        ["A3","M3",98]]
-    # # MONEY = [["ANO","MNO","Payment"],
-    # #          ["A1","M1",79],
-    # #          ["A1","M2",80],
-    # #          ["Y9","Z9",99]]
-    # Student = [['SID','Name','Std'],
-    #           [101,'Alex',10],
-    #           [102,'Maria',11]]
-    # Subjects = [['Class','Subject'],
-    #             [10,'Math'],
-    #             [10,'English'],
-    #             [11,'Music'],
-    #             [11,'Sports']]
-    # Courses = [['CID','Course','Dept'],
-    #            ['CS01','Database','CS'],
-    #            ['ME01','Mechanics','ME'],
-    #            ['EE01','Electronics','EE']]
-    # HoD = [['Dept','Head'],
-    #        ['CS','Alex'],
-    #        ['ME','Maya'],
-    #        ['EE','Mira']]
               
     # selectFunction(PAY, ['Payment'], '>', '70')
     # selectFunction(PAY, ['Payment','Money'], '>', '70')
@@ -99,7 +74,6 @@ def main():
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
     # xProdFunction(PAY, MOVIES)
-    # unionFunction(PAY, MONEY)
     # unionFunction(PAY, MOVIES)
     # natJoinFunction('MOVIES.csv', 'PAY.csv') 
     # joinFunction(MOVIES, PAY, "MNO", "MNO", "=") # has an issue in select()
@@ -120,7 +94,7 @@ def reformat_to_2Darray(csvfile):
     
     return data
 
-#PARSE FUNCTION maybe rename this
+#PARSE FUNCTION Takes the inputed query and removes any symbols that arent in the opperator list
 def parseQuery(inputQuery):
     operatorList = [">=", ">" , "!=" , "=", "<=", "<", "*", "-"]
 
@@ -131,9 +105,8 @@ def parseQuery(inputQuery):
 
     return(inputQuery)
 
-#
+#This is the main function that depending on what is in the query calls the other functions
 def callFunction(inputQuery):
-    print('start')
     relations = {
         "PAY": PAY,
         "ACTORS": ACTORS,
@@ -153,8 +126,8 @@ def callFunction(inputQuery):
     for word in splitQuery:
         splitList.append(word)
 
-    print(splitList)
 
+#If there is a union split the list before and after the U
     if 'U' in splitList:
         wordIndex = splitList.index('U')
 
@@ -163,18 +136,16 @@ def callFunction(inputQuery):
 
         firstHalfResult = []
 
+#Get the relations that the two queries use
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
         secondrelation = len(secondHalf)
         thesecondRelation = secondHalf[secondrelation-1]
-        print(firstHalf) 
-        print(secondHalf)
     else:
         firstHalf.extend(splitList)
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
 
-    print(firstHalf)
 
     if 'SELE' in firstHalf:
         wordIndex = splitList.index('SELE')
@@ -196,8 +167,6 @@ def callFunction(inputQuery):
             return selectResults
     
     if len(secondHalf) != 0:
-        print("SECOND HALF!!!!")
-        print(secondHalf)
         if 'SELE' in secondHalf:
             wordIndex = secondHalf.index('SELE')
             attributes = secondHalf[wordIndex + 1]
@@ -205,9 +174,9 @@ def callFunction(inputQuery):
             value = secondHalf[wordIndex + 3]
             addCSV = relations.get(thesecondRelation) 
 
-            print(addCSV, attributes, comparison, value)
+            #print(addCSV, attributes, comparison, value)
             selectResults = selectFunction(addCSV, attributes, comparison, value)
-            print(selectResults)
+            #print(selectResults)
 
             if 'PROJ' in secondHalf:
                 wordIndex = splitList.index('PROJ')
@@ -215,11 +184,7 @@ def callFunction(inputQuery):
                 #print(selectResults)
                 secondHalfResult =  projectFunction(selectResults, projAttribute)
 
-    print(secondHalfResult)
-
     #return unionFunction(firstHalfResult, secondHalfResult)
-
-    #print(splitList)
 
 # SELECT FUNCTION
 # "relationData" parameter should be a 2-D array
@@ -256,7 +221,6 @@ def selectFunction(relationData, attributes, comparison, value):
                 index = relationData[0].index(column)
                 index_list.append(index)
     results.append(relationData[0])
-    #print(results)
 
     # Read the 2-D array(relationData) row by row
     # mapping = [] # temporal row
