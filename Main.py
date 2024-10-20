@@ -2,46 +2,29 @@
 #CS4700
 #Project 1
 
-
 import copy
 import csv
 import operator
 import string
 
-
+#Main
 def main():
+#Open the RAqueries file and count the number of lines
     queryList = []
     queryFile = open('RAQueries.txt', 'r')
     lines = len(queryFile.readlines())
     queryFile.close()
 
-#Re-Open file to read contents
+#Re-Open file to read contents and put them in a list
     queryFile = open('RAQueries.txt', 'r')
 
-    for i in range(1,4+1):
-        query  = str(queryFile.readline())
+    for i in range(1,lines+1):
+        query = str(queryFile.readline())
+        query = query.strip('\n')
         queryList.append(query)
     queryFile.close()
 
-    #print(projectFunction('PAY.csv', 'MNO'))
-    #print(unionFunction('',''))
-
-#Call parse function on all of the queries
-    # for i in range(0,len(queryList)):
-    #     queryList[i] = queryList[i].strip('\n')
-    #     queryList[i] = parseQuery(queryList[i])
-
-    #print(queryList)
-    #callFunction(queryList[0])
-
-    # testOne = ['1','5','6','8','9', 'word']
-    # testTwo = ['1','2','4','8','9']
-
-    # print(intersectFunction(testOne, testTwo))
-
-    #Hardcoding arguments for now
-
-    # Open the specifed file
+#Set global variables for all the datasets to be used in dictionaries
     global PAY 
     global MOVIES
     global ACTORS
@@ -49,24 +32,36 @@ def main():
     MOVIES = './MOVIES.csv'
     ACTORS = './ACTORS.csv'
 
+#Reformat the datasets to 2D arrays for functions
     PAY = reformat_to_2Darray(PAY)
     MOVIES = reformat_to_2Darray(MOVIES)
     ACTORS = reformat_to_2Darray(ACTORS)
 
+    outputFile = open('RAoutput.csv', 'w')
 
-    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME ='Rivers'} (ACTORS)))")
-    print(f'{query}:')
-    print(callFunction(query))
+#Run program on all queries and print to RAoutput.csv (COMMENTED FOR NOW)
+    # for i in range(0,len(queryList)):
+    #     parsedQuery = parseQuery(queryList[i])
+    #     outputFile.write(f'{queryList[i]}:\n')
+    #     outputFile.write(f'{callFunction(parsedQuery)}\n\n\n')
 
-    queryTwo = parseQuery("SELE_{Payment > 70} (PAY)")
-    print(f'{queryTwo}:')
-    print(callFunction(queryTwo))
+    #outputFile.close()
+
+    # query = parseQuery(queryList[3])
+    # print(f'{query}:')
+    # print(callFunction(query))
+
+    # queryTwo = parseQuery(queryList[0])
+    # print(f'{queryTwo}:')
+    # print(callFunction(queryTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
     # selectFunction('PAY.csv', 'Payment', '>', '70')
-              
+    # testOne = ['1','5','6','8','9', 'word']
+    # testTwo = ['1','2','4','8','9']
+    # print(intersectFunction(testOne, testTwo))
     # selectFunction(PAY, ['Payment'], '>', '70')
     # selectFunction(PAY, ['Payment','Money'], '>', '70')
     #projectFunction(PAY, ['ANO'])
@@ -80,14 +75,7 @@ def main():
     # joinFunction(Student, Subjects, "Std", "Class", "=")
     #print(natJoinFunction(Courses, HoD))
 
-
-#Results need to be stored in output file
-    # outputFile = open('RAoutput.csv', 'w')
-    # for i in range(0,len(queryList)):
-    #     outputFile.write(f'{queryList[i]}\n')
-    #     outputFile.write(f'{callFunction(queryList[i])}\n\n')
-    
-    #outputFile.close()
+######################################################################################################################
 
 def reformat_to_2Darray(csvfile):
     data = list(csv.reader(open(csvfile)))
