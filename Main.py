@@ -53,9 +53,9 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    # queryTwo = parseQuery(queryList[0])
-    # print(f'{queryTwo}:')
-    # print(callFunction(queryTwo))
+    queryTwo = parseQuery(queryList[0])
+    print(f'{queryTwo}:')
+    print(callFunction(queryTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
@@ -95,6 +95,40 @@ def parseQuery(inputQuery):
 
     return(inputQuery)
 
+#Analyze query function
+def analyzeQuery(queryHalf, splitList, relations, relation):
+    if 'SELE' in queryHalf:
+        wordIndex = splitList.index('SELE')
+        attributes = []
+        attributes.append(splitList[wordIndex + 1])
+        comparison = splitList[wordIndex + 2]
+        value = splitList[wordIndex + 3]
+        addCSV = relations.get(relation) 
+        #print(addCSV, attribute, comparison, value)
+        selectResults = selectFunction(addCSV, attributes, comparison, value)
+        if 'PROJ' in queryHalf:
+            wordIndex = splitList.index('PROJ')
+            projAttribute = splitList[wordIndex + 1]
+            firstHalfResult =  projectFunction(selectResults, projAttribute)
+            print(firstHalfResult)
+        else:
+            return selectResults
+
+#Split the lsit based on what charcter is in the list
+def splitTheList(splitList, splitChar):
+    wordIndex = splitList.index(splitChar)
+
+    firstHalf = splitList[:wordIndex]
+    secondHalf = splitList[wordIndex+1:]
+
+#Get the relations that the two queries use
+    firstrelation = len(firstHalf)
+    thefirstRelation = firstHalf[firstrelation-1]
+    secondrelation = len(secondHalf)
+    thesecondRelation = secondHalf[secondrelation-1]
+
+    return firstHalf, secondHalf, thefirstRelation, thesecondRelation
+
 #This is the main function that depending on what is in the query calls the other functions
 def callFunction(inputQuery):
     relations = {
@@ -110,8 +144,10 @@ def callFunction(inputQuery):
     firstHalf = []
     secondHalf = []
 
-    selectResults = []
-    secondHalfResult = []
+    firstrelation = []
+    thefirstRelation = []
+    secondrelation = []
+    thesecondRelation = []
 
     for word in splitQuery:
         splitList.append(word)
@@ -119,61 +155,22 @@ def callFunction(inputQuery):
 
 #If there is a union split the list before and after the U
     if 'U' in splitList:
-        wordIndex = splitList.index('U')
-
-        firstHalf = splitList[:wordIndex]
-        secondHalf = splitList[wordIndex+1:]
-
-        firstHalfResult = []
-
-#Get the relations that the two queries use
-        firstrelation = len(firstHalf)
-        thefirstRelation = firstHalf[firstrelation-1]
-        secondrelation = len(secondHalf)
-        thesecondRelation = secondHalf[secondrelation-1]
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'U')
+    elif '-' in splitList:
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-')
+    elif 'INTE' in splitList:
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'INTE')
     else:
         firstHalf.extend(splitList)
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
 
+    firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
-    if 'SELE' in firstHalf:
-        wordIndex = splitList.index('SELE')
-        attributes = []
-        attributes.append(splitList[wordIndex + 1])
-        comparison = splitList[wordIndex + 2]
-        value = splitList[wordIndex + 3]
-        addCSV = relations.get(thefirstRelation) 
-
-        #print(addCSV, attribute, comparison, value)
-        selectResults = selectFunction(addCSV, attributes, comparison, value)
-
-        if 'PROJ' in firstHalf:
-            wordIndex = splitList.index('PROJ')
-            projAttribute = splitList[wordIndex + 1]
-            firstHalfResult =  projectFunction(selectResults, projAttribute)
-            print(firstHalfResult)
-        else:
-            return selectResults
-    
     if len(secondHalf) != 0:
-        if 'SELE' in secondHalf:
-            wordIndex = secondHalf.index('SELE')
-            attributes = secondHalf[wordIndex + 1]
-            comparison = secondHalf[wordIndex + 2]
-            value = secondHalf[wordIndex + 3]
-            addCSV = relations.get(thesecondRelation) 
+        secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
 
-            #print(addCSV, attributes, comparison, value)
-            selectResults = selectFunction(addCSV, attributes, comparison, value)
-            #print(selectResults)
-
-            if 'PROJ' in secondHalf:
-                wordIndex = splitList.index('PROJ')
-                projAttribute = splitList[wordIndex + 1]
-                #print(selectResults)
-                secondHalfResult =  projectFunction(selectResults, projAttribute)
-
+    #return firstHalfResult
     #return unionFunction(firstHalfResult, secondHalfResult)
 
 # SELECT FUNCTION
