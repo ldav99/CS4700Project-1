@@ -2,6 +2,7 @@
 #CS4700
 #Project 1
 
+import ast
 import copy
 import csv
 import operator
@@ -54,20 +55,19 @@ def main():
     # print(callFunction(query))
 
     queryTwo = parseQuery(queryList[0])
-    print(f'{queryTwo}:')
-    print(callFunction(queryTwo))
+    # print(f'{queryTwo}:')
+    # print(callFunction(queryTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
-    # selectFunction('PAY.csv', 'Payment', '>', '70')
     # testOne = ['1','5','6','8','9', 'word']
     # testTwo = ['1','2','4','8','9']
     # print(intersectFunction(testOne, testTwo))
-    # selectFunction(PAY, ['Payment'], '>', '70')
-    # selectFunction(PAY, ['Payment','Money'], '>', '70')
-    #projectFunction(PAY, ['ANO'])
-    # projectFunction(PAY, ['ANO','MNO'])
+    # print(selectFunction(PAY, 'Payment', '>', 70)) # Test SELECT
+    # print(selectFunction(PAY, 'ANO', '=', 'A4')) # Test SELECT
+    # print(projectFunction(PAY, 'ANO'))
+    print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
     # xProdFunction(PAY, MOVIES)
@@ -80,7 +80,20 @@ def main():
 ######################################################################################################################
 
 def reformat_to_2Darray(csvfile):
-    data = list(csv.reader(open(csvfile)))
+    # data = list(csv.reader(open(csvfile)))
+    with open(csvfile, 'r') as f:
+        reader = csv.reader(f)
+        data = []
+        for row in reader:
+            parsed_row = [] # A list to store the converted values
+            for cell in row:
+                # Convert each cell to its original data type
+                try:
+                    parsed_row.append(ast.literal_eval(cell))
+                # If can't convert, leave it as string
+                except:
+                    parsed_row.append(cell)
+            data.append(parsed_row)
     
     return data
 
@@ -190,9 +203,9 @@ def callFunction(inputQuery):
 
 # SELECT FUNCTION
 # "relationData" parameter should be a 2-D array
-# "attributes" parameter should be a 1-D array (e.g. ['Payment'])
+# "attributes" parameter should be a string
 # returns 2-D array
-def selectFunction(relationData, attributes, comparison, value):
+def selectFunction(relationData, attribute, comparison, value):
     # A 2-D array to return for this function
     results = []
 
@@ -214,32 +227,26 @@ def selectFunction(relationData, attributes, comparison, value):
         raise ValueError(f"selectFunction()::invalid operator -> {comparison}")
 
     # Get the index of the target attribute(column)
-    index_list = []
-    target_attributes = []
     for column in relationData[0]: # attribute row = relationaData[0]
-        for attribute in attributes:
-            if column == attribute:
-                target_attributes.append(column)
-                index = relationData[0].index(column)
-                index_list.append(index)
+        if column == attribute:
+            column_index = relationData[0].index(column)            
     results.append(relationData[0])
 
     # Read the 2-D array(relationData) row by row
-    # mapping = [] # temporal row
     for row in relationData[1:]:
-        for column_index in index_list:
-            criterionValue = value
-            currentValue = row[column_index]
+        criterionValue = value
+        currentValue = row[column_index]
+
+        # If the data type of currentValue is int
+        if isinstance(currentValue, int):
             # Perform the operation. If the operation is true,
             # then add the current value to the "results" list
             if operation(int(criterionValue), int(currentValue)):
-                # mapping.append(currentValue) 
                 results.append(row)
-            # else:
-            #     mapping.append("")
-            #     results.append(mapping)
-        # results.extend(mapping)
-        # mapping = [] # Clear to contain new data
+        # Else the data type of currentValue is str
+        else:
+            if operation(criterionValue, currentValue):
+                results.append(row)
     
     # print(results) # Uncomment this to test this function
     return results
