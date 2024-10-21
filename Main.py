@@ -103,14 +103,13 @@ def analyzeQuery(queryHalf, splitList, relations, relation):
         attributes.append(splitList[wordIndex + 1])
         comparison = splitList[wordIndex + 2]
         value = splitList[wordIndex + 3]
-        addCSV = relations.get(relation) 
-        #print(addCSV, attribute, comparison, value)
+        addCSV = relations.get(relation)
         selectResults = selectFunction(addCSV, attributes, comparison, value)
         if 'PROJ' in queryHalf:
             wordIndex = splitList.index('PROJ')
             projAttribute = splitList[wordIndex + 1]
-            firstHalfResult =  projectFunction(selectResults, projAttribute)
-            print(firstHalfResult)
+            halfResult =  projectFunction(selectResults, projAttribute)
+            return halfResult
         else:
             return selectResults
 
@@ -153,25 +152,41 @@ def callFunction(inputQuery):
         splitList.append(word)
 
 
-#If there is a union split the list before and after the U
+#If there is a union or difference or intersection split the list before and after the U
     if 'U' in splitList:
         firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'U')
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
+
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
+
+        return unionFunction(firstHalfResult, secondHalfResult)
+#Difference
     elif '-' in splitList:
         firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-')
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
+
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
+
+        return differnceFunction(firstHalfResult, secondHalfResult)
+#Intersection
     elif 'INTE' in splitList:
         firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'INTE')
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
+
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
+
+        return intersectFunction(firstHalfResult, secondHalfResult)
     else:
+#Else it doesnt need anything above so it just needs to check for select and project
         firstHalf.extend(splitList)
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
+        
+        return analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
-    firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
-
-    if len(secondHalf) != 0:
-        secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
-
-    #return firstHalfResult
-    #return unionFunction(firstHalfResult, secondHalfResult)
 
 # SELECT FUNCTION
 # "relationData" parameter should be a 2-D array
