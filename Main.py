@@ -54,9 +54,9 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    # queryTwo = parseQuery(queryList[0])
-    # print(f'{queryTwo}:')
-    # print(callFunction(queryTwo))
+    queryTwo = parseQuery(queryList[1])
+    print(f'{queryTwo}:')
+    print(callFunction(queryTwo))
 
     # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
     # print(f'TEST QUERY: {testQ}')
@@ -75,10 +75,10 @@ def main():
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
-    natJoin_result = natJoinFunction(ACTORS, PAY)
-    print(natJoin_result)
-    project_result = projectFunction(natJoin_result, 'ANO')
-    print(project_result)
+    #natJoin_result = natJoinFunction(ACTORS, PAY)
+    #print(natJoin_result)
+    #project_result = projectFunction(natJoin_result, 'ANO')
+    #print(project_result)
     # testOne = ['1','5','6','8','9', 'word']
     # testTwo = ['1','2','4','8','9']
     # print(intersectFunction(testOne, testTwo))
@@ -170,7 +170,7 @@ def analyzeQuery(queryHalf, splitList, relations, relation):
             return selectResults
 
 #Split the lsit based on what charcter is in the list
-def splitTheList(splitList, splitChar):
+def splitTheList(splitList, splitChar, relations):
     wordIndex = splitList.index(splitChar)
 
     firstHalf = splitList[:wordIndex]
@@ -182,14 +182,14 @@ def splitTheList(splitList, splitChar):
 #Check for natural join
     if firstHalf[firstrelation-2] == '*':
         joinRelationOne = firstHalf[firstrelation - 3]
-        joinedRelation = natJoinFunction(joinRelationOne, thefirstRelation)
+        joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thefirstRelation))
         thefirstRelation = joinedRelation
     secondrelation = len(secondHalf)
     thesecondRelation = secondHalf[secondrelation-1]
 #Check for natural join
     if secondHalf[secondrelation-2] == '*':
         joinRelationOne = secondHalf[secondrelation - 3]
-        joinedRelation = natJoinFunction(joinRelationOne, thesecondRelation)
+        joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thesecondRelation))
         thesecondRelation = joinedRelation
 
     return firstHalf, secondHalf, thefirstRelation, thesecondRelation
@@ -220,7 +220,7 @@ def callFunction(inputQuery):
 
 #If there is a union or difference or intersection split the list before and after the U
     if 'U' in splitList:
-        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'U')
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'U', relations)
         firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
         if len(secondHalf) != 0:
@@ -229,7 +229,7 @@ def callFunction(inputQuery):
         #return unionFunction(firstHalfResult, secondHalfResult)
 #Difference
     elif '-' in splitList:
-        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-')
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-', relations)
         firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
         if len(secondHalf) != 0:
@@ -238,7 +238,7 @@ def callFunction(inputQuery):
         return differnceFunction(firstHalfResult, secondHalfResult)
 #Intersection
     elif 'INTE' in splitList:
-        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'INTE')
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'INTE', relations)
         firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
         if len(secondHalf) != 0:
@@ -253,7 +253,7 @@ def callFunction(inputQuery):
         #Check for natural join
         if firstHalf[firstrelation-2] == '*':
             joinRelationOne = firstHalf[firstrelation - 3]
-            joinedRelation = natJoinFunction(joinRelationOne, thefirstRelation)
+            joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thefirstRelation))
             thefirstRelation = joinedRelation
         
         return analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
@@ -446,7 +446,7 @@ def natJoinFunction(relationData1, relationData2):
     # Condition check to be natural join
     if len(commonAttributes) == 0:
         print("natJoinFunction::Natural Join Condition violated")
-        print("-> There is no common attributes between two relations.")
+        print(f"-> There is no common attributes between two relations. {relationData1},{relationData2}")
         return ValueError
 
     # Add the attributes of the result of natural join to results[]
