@@ -478,11 +478,20 @@ def differnceFunction(relationData1, relationData2):
     #     for attribute2 in relation2_attributes:
     #         if attribute1 == attribute2:
     #             unique_attributes.remove(attribute1)
-    for row in relationData1[1:]:
+
+    # Remove duplicated elements in relationData1
+    unique_relationData1 = []
+    unique_relationData1.append(relationData1[0])
+    for element in relationData1[1:]:
+        if element not in unique_relationData1:
+            unique_relationData1.append(element)
+
+    # Perform relationData1 - relationData2
+    for row in unique_relationData1[1:]:
         if row in relationData2[1:]:
-            relationData1.remove(row)
+            unique_relationData1.remove(row)
     
-    results = relationData1
+    results = unique_relationData1
     return results
 
     # # Get the index of unique attributes(columns) from relationData1
