@@ -54,14 +54,20 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    # queryTwo = parseQuery(queryList[0])
-    # print(f'{queryTwo}:')
-    # print(callFunction(queryTwo))
+    queryTwo = parseQuery(queryList[0])
+    print(f'{queryTwo}:')
+    print(callFunction(queryTwo))
 
-
-    testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
-    print(f'TEST QUERY: {testQ}')
-    print(callFunction(testQ))
+    testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
+    funOne = callFunction(testTwo)
+    # testQ = parseQuery('(PROJ_{ANO} (SELE_{Payment < 60} (PAY))')
+    # funTwo = callFunction(testQ)
+    # # print(f'TEST QUERY: {testQ}')
+    # # print(callFunction(testQ))
+    print(f'ONE {funOne}')
+    # print(f'TWO {funTwo}')
+    # print('HERE-----------')
+    # print(differnceFunction(funOne, funTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
