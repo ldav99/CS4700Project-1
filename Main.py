@@ -54,21 +54,20 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    queryTwo = parseQuery(queryList[2])
-    print(f'{queryTwo}:')
-    print(callFunction(queryTwo))
-
+    # queryTwo = parseQuery(queryList[0])
+    # print(f'{queryTwo}:')
+    # print(callFunction(queryTwo))
 
     # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
     # print(f'TEST QUERY: {testQ}')
     # print(callFunction(testQ))
-    testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
-    funOne = callFunction(testTwo)
+    # testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
+    # funOne = callFunction(testTwo)
     # testQ = parseQuery('(PROJ_{ANO} (SELE_{Payment < 60} (PAY))')
     # funTwo = callFunction(testQ)
     # # print(f'TEST QUERY: {testQ}')
     # # print(callFunction(testQ))
-    #print(f'ONE {funOne}')
+    # print(f'ONE {funOne}')
     # print(f'TWO {funTwo}')
     # print('HERE-----------')
     # print(differnceFunction(funOne, funTwo))
@@ -76,6 +75,10 @@ def main():
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
+    natJoin_result = natJoinFunction(ACTORS, PAY)
+    print(natJoin_result)
+    project_result = projectFunction(natJoin_result, 'ANO')
+    print(project_result)
     # testOne = ['1','5','6','8','9', 'word']
     # testTwo = ['1','2','4','8','9']
     # print(intersectFunction(testOne, testTwo))
@@ -96,16 +99,16 @@ def main():
     # difference_left_right = differnceFunction(result_left, result_right)
     # print(difference_left_right)
 
-    COURSES = [['CID','Course','Dept'],
-               ['CS01','Database','CS'],
-               ['ME01','Mechanics','ME'],
-               ['EE01','Electronics','EE']]
-    HoD = [['Dept','Head'],
-           ['CS','Alex'],
-           ['ME','Maya'],
-           ['EE','Mira']]
-    result_inner = natJoinFunction(COURSES, HoD)
-    print(result_inner)
+    # COURSES = [['CID','Course','Dept'],
+    #            ['CS01','Database','CS'],
+    #            ['ME01','Mechanics','ME'],
+    #            ['EE01','Electronics','EE']]
+    # HoD = [['Dept','Head'],
+    #        ['CS','Alex'],
+    #        ['ME','Maya'],
+    #        ['EE','Mira']]
+    # result_inner = natJoinFunction(COURSES, HoD)
+    # print(result_inner)
 
     # result_inner = natJoinFunction(ACTORS, PAY)
     # print(result_inner)
@@ -442,35 +445,49 @@ def natJoinFunction(relationData1, relationData2):
     
     # Condition check to be natural join
     if len(commonAttributes) == 0:
-        print(f"natJoinFunction::There is no common attributes between two relations.")
+        print("natJoinFunction::Natural Join Condition violated")
+        print("-> There is no common attributes between two relations.")
         return ValueError
 
-    # Extract the indices of common attributes in both relations
-    indices_relation1 = []
-    indices_relation2 = []
-
-    # Walk through each common attribute to get its index in relationalData1
-    for commonAttribute in commonAttributes:
-        index_in_relation_1 = relationData1[0].index(commonAttribute)
-        indices_relation1.append(index_in_relation_1)
-
-    # Walk through each common attribute to get its index in relationalData2
-    for commonAttribute in commonAttributes:
-        index_in_relation_2 = relationData2[0].index(commonAttribute)
-        indices_relation2.append(index_in_relation_2)
-    
-    # Add the attributes of the result of natural joint to results[]
+    # Add the attributes of the result of natural join to results[]
     result_attributes = relationData1[0]
 
-    # Add unique attributes under relationData2's attribute
+    # Add unique attributes to results[]
     for attribute in relationData2[0]:
         if attribute not in commonAttributes:
             result_attributes.append(attribute)
     results.append(result_attributes)
 
-    """
-    TODO: Need to work on the rest of this function from here
-    """
+    # index list of the common attributes in both relations
+    indices_relation_1 = []
+    indices_relation_2 = []
+    for attribute in commonAttributes:
+        indices_relation_1.append(relationData1[0].index(attribute))
+    for attribute in commonAttributes:
+        indices_relation_2.append(relationData2[0].index(attribute))
+    
+    # Compare rows from both relations to find common attribute values
+    # If common attribute values are equal, combine rows
+    for row1 in relationData1[1:]:
+        for row2 in relationData2[1:]:
+            # Check if common attribute values match
+            attributes_equal = True
+            for i, j in zip(indices_relation_1, indices_relation_2):
+                # Compare the value of the common attribute in row1 with the value in row2
+                if row1[i] != row2[j]:
+                    attributes_equal = False
+                    break
+            # If commmon attribute values are equal, combine rows
+            if attributes_equal:
+                # new_row = a copy of row1
+                new_row = row1[:]
+                # Add values from row2 that aren't part of the common attributes
+                for k in range(len(row2)):
+                    if k not in indices_relation_2:
+                        new_row.append(row2[k])
+                results.append(new_row)
+        
+
     
     # https://www.tutorialspoint.com/dbms/database_joins.htm   
     # print(results)
