@@ -70,9 +70,13 @@ def main():
     # testTwo = ['1','2','4','8','9']
     # print(intersectFunction(testOne, testTwo))
     # print(selectFunction(PAY, 'Payment', '>', 70)) # Test SELECT
+    # print(selectFunction(PAY, 'Payment', '>=', 70)) # Test SELECT
+    # print(selectFunction(PAY, 'Payment', '<', 60)) # Test SELECT
+    # print(selectFunction(PAY, 'Payment', '<=', 60)) # Test SELECT
+    # print(selectFunction(PAY, 'Payment', '=', 1)) # Test SELECT
     # print(selectFunction(PAY, 'ANO', '=', 'A4')) # Test SELECT
     # print(projectFunction(PAY, 'ANO'))
-    #print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
+    # #print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
     # xProdFunction(PAY, MOVIES)
@@ -219,11 +223,11 @@ def selectFunction(relationData, attribute, comparison, value):
         "<=": operator.le,
         "=": operator.eq,
         "!=": operator.ne,
-        ">": operator.le,
+        ">": operator.gt,
         ">=": operator.ge
     }
 
-    # Check if "comparision" is a operator in the dictionary
+    # Check if "comparison" is a operator in the dictionary
     # Otherwise, throw an error
     try:
         operation = operators.get(comparison)
@@ -243,9 +247,13 @@ def selectFunction(relationData, attribute, comparison, value):
 
         # If the data type of currentValue is int
         if isinstance(currentValue, int):
-            # Perform the operation. If the operation is true,
-            # then add the current value to the "results" list
-            if operation(int(criterionValue), int(currentValue)):
+            if (comparison == '<') or (comparison == '<='):
+                if operation(int(currentValue), int(criterionValue)):
+                    results.append(row)
+            elif (comparison == '>') or (comparison == '>=') :
+                if operation(int(currentValue), int(criterionValue)):
+                    results.append(row)
+            elif operation(int(currentValue), int(criterionValue)):
                 results.append(row)
         # Else the data type of currentValue is str
         else:
