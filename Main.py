@@ -79,12 +79,28 @@ def main():
     # print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
     # intersectFunction(PAY, MOVIES)
     # print(differnceFunction(PAY, MOVIES))
-    result_left = projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')
-    print(result_left)
-    result_right = projectFunction(selectFunction(PAY, 'Payment', '<', 60), 'ANO')
-    print(result_right)
-    difference_left_right = differnceFunction(result_left, result_right)
-    print(difference_left_right)
+    # result_left = projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')
+    # print(result_left)
+    # result_right = projectFunction(selectFunction(PAY, 'Payment', '<', 60), 'ANO')
+    # print(result_right)
+    # difference_left_right = differnceFunction(result_left, result_right)
+    # print(difference_left_right)
+
+    COURSES = [['CID','Course','Dept'],
+               ['CS01','Database','CS'],
+               ['ME01','Mechanics','ME'],
+               ['EE01','Electronics','EE']]
+    HoD = [['Dept','Head'],
+           ['CS','Alex'],
+           ['ME','Maya'],
+           ['EE','Mira']]
+    result_inner = natJoinFunction(COURSES, HoD)
+    print(result_inner)
+
+    # result_inner = natJoinFunction(ACTORS, PAY)
+    # print(result_inner)
+    # result_outer = projectFunction(result_inner, 'ANO')
+    # print(result_outer)
     # xProdFunction(PAY, MOVIES)
     # unionFunction(PAY, MOVIES)
     # natJoinFunction('MOVIES.csv', 'PAY.csv') 
@@ -388,7 +404,10 @@ def joinFunction(relationData1, relationData2, attribute1, attribute2, compariso
 def natJoinFunction(relationData1, relationData2):
     # A 2-D array to return
     results = []
-    
+
+    # Do cross-product of them
+    cross_product = xProdFunction(relationData1, relationData2)    
+
     # Extract common attributes between two relations
     commonAttributes = []
     for attribute in relationData1[0]:
@@ -401,21 +420,32 @@ def natJoinFunction(relationData1, relationData2):
         print("natJoinFunction::There is no common attributes between two relations.")
         return ValueError
 
-    # Extract the index of common attribute
-    indexList = []
+    # Extract the indices of common attributes in both relations
+    indices_relation1 = []
+    indices_relation2 = []
+
+    # Walk through each common attribute to get its index in relationalData1
     for commonAttribute in commonAttributes:
-        index = relationData1[0].index(commonAttribute)
-        indexList.append(index)
-    # print(indexList)
+        index_in_relation_1 = relationData1[0].index(commonAttribute)
+        indices_relation1.append(index_in_relation_1)
 
-    intersection = intersectFunction(relationData1, relationData2)
-    diff1 = differnceFunction(relationData1, intersection)
-    diff2 = differnceFunction(relationData2, intersection)
+    # Walk through each common attribute to get its index in relationalData2
+    for commonAttribute in commonAttributes:
+        index_in_relation_2 = relationData2[0].index(commonAttribute)
+        indices_relation2.append(index_in_relation_2)
+    
+    # Add the attributes of the result of natural joint to results[]
+    result_attributes = relationData1[0]
 
-    # zip pairs each row from diff1 with corresponding row from diff2
-    combined = [row1 + row2 for row1, row2, in zip(diff1, diff2)]
-    # zip pairs each row from intersection with corresponding row from combined
-    results = [row1 + row2 for row1, row2, in zip(intersection, combined)]
+    # Add unique attributes under relationData2's attribute
+    for attribute in relationData2[0]:
+        if attribute not in commonAttributes:
+            result_attributes.append(attribute)
+    results.append(result_attributes)
+
+    """
+    TODO: Need to work on the rest of this function from here
+    """
     
     # https://www.tutorialspoint.com/dbms/database_joins.htm   
     # print(results)
@@ -458,16 +488,6 @@ def unionFunction(relationData1, relationData2):
 def differnceFunction(relationData1, relationData2):
     # An 2-D array to return
     results = []
-    
-    # Extract unique attribute(s) from relationData1
-        # unique_data = []
-        # relation1_data = relationData1[1:]
-        # relation2_data = relationData2[1:]
-    # unique_attributes = copy.deepcopy(relationData1[0]) # deep copy the value(array)
-    # for attribute1 in relation1_attributes:
-    #     for attribute2 in relation2_attributes:
-    #         if attribute1 == attribute2:
-    #             unique_attributes.remove(attribute1)
 
     # Remove duplicated elements in relationData1
     unique_relationData1 = []
@@ -483,26 +503,6 @@ def differnceFunction(relationData1, relationData2):
     
     results = unique_relationData1
     return results
-
-    # # Get the index of unique attributes(columns) from relationData1
-    # index_list = []
-    # for column in relationData1[0]:
-    #     for attribute in unique_attributes:
-    #         if column == attribute:
-    #             index = relationData1[0].index(column)
-    #             index_list.append(index)
-    
-    # # Read the 2-D array(relationData1) row by row
-    # mapping = [] # temporal row
-    # for row in relationData1[1:]:
-    #     for column_index in index_list:
-    #         currentValue = row[column_index]
-    #         mapping.append(currentValue)
-    #     results.append(mapping)
-    #     mapping = [] # clear to contain new data
-
-    # # print(results)
-    # return results
 
 # CROSS PRODUCT FUNCTION
 # "relationData1" parameter should be a 2-D array
