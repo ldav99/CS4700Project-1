@@ -54,9 +54,14 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    queryTwo = parseQuery(queryList[0])
+    # queryTwo = parseQuery(queryList[0])
     # print(f'{queryTwo}:')
     # print(callFunction(queryTwo))
+
+
+    testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
+    print(f'TEST QUERY: testQ')
+    print(callFunction(testQ))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
@@ -111,16 +116,15 @@ def parseQuery(inputQuery):
 #Analyze query function
 def analyzeQuery(queryHalf, splitList, relations, relation):
     if 'SELE' in queryHalf:
-        wordIndex = splitList.index('SELE')
-        attributes = []
-        attributes.append(splitList[wordIndex + 1])
-        comparison = splitList[wordIndex + 2]
-        value = splitList[wordIndex + 3]
+        wordIndex = queryHalf.index('SELE')
+        attributes = queryHalf[wordIndex + 1]
+        comparison = queryHalf[wordIndex + 2]
+        value = queryHalf[wordIndex + 3]
         addCSV = relations.get(relation)
         selectResults = selectFunction(addCSV, attributes, comparison, value)
         if 'PROJ' in queryHalf:
-            wordIndex = splitList.index('PROJ')
-            projAttribute = splitList[wordIndex + 1]
+            wordIndex = queryHalf.index('PROJ')
+            projAttribute = queryHalf[wordIndex + 1]
             halfResult =  projectFunction(selectResults, projAttribute)
             return halfResult
         else:
@@ -173,7 +177,7 @@ def callFunction(inputQuery):
         if len(secondHalf) != 0:
             secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
 
-        return unionFunction(firstHalfResult, secondHalfResult)
+        #return unionFunction(firstHalfResult, secondHalfResult)
 #Difference
     elif '-' in splitList:
         firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-')
