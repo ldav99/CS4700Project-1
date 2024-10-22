@@ -58,6 +58,10 @@ def main():
     print(f'{queryTwo}:')
     print(callFunction(queryTwo))
 
+
+    # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
+    # print(f'TEST QUERY: {testQ}')
+    # print(callFunction(testQ))
     testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
     funOne = callFunction(testTwo)
     # testQ = parseQuery('(PROJ_{ANO} (SELE_{Payment < 60} (PAY))')
@@ -82,9 +86,15 @@ def main():
     # print(selectFunction(PAY, 'Payment', '=', 1)) # Test SELECT
     # print(selectFunction(PAY, 'ANO', '=', 'A4')) # Test SELECT
     # print(projectFunction(PAY, 'ANO'))
-    # #print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
+    # print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
     # intersectFunction(PAY, MOVIES)
-    # differnceFunction(PAY, MOVIES)
+    # print(differnceFunction(PAY, MOVIES))
+    result_left = projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')
+    print(result_left)
+    result_right = projectFunction(selectFunction(PAY, 'Payment', '<', 60), 'ANO')
+    print(result_right)
+    difference_left_right = differnceFunction(result_left, result_right)
+    print(difference_left_right)
     # xProdFunction(PAY, MOVIES)
     # unionFunction(PAY, MOVIES)
     # natJoinFunction('MOVIES.csv', 'PAY.csv') 
@@ -460,34 +470,40 @@ def differnceFunction(relationData1, relationData2):
     results = []
     
     # Extract unique attribute(s) from relationData1
-    relation1_attributes = relationData1[0]
-    relation2_attributes = relationData2[0]
-    unique_attributes = copy.deepcopy(relationData1[0]) # deep copy the value(array)
-    for attribute1 in relation1_attributes:
-        for attribute2 in relation2_attributes:
-            if attribute1 == attribute2:
-                unique_attributes.remove(attribute1)
-    results.append(unique_attributes)
-
-    # Get the index of unique attributes(columns) from relationData1
-    index_list = []
-    for column in relationData1[0]:
-        for attribute in unique_attributes:
-            if column == attribute:
-                index = relationData1[0].index(column)
-                index_list.append(index)
-    
-    # Read the 2-D array(relationData1) row by row
-    mapping = [] # temporal row
+        # unique_data = []
+        # relation1_data = relationData1[1:]
+        # relation2_data = relationData2[1:]
+    # unique_attributes = copy.deepcopy(relationData1[0]) # deep copy the value(array)
+    # for attribute1 in relation1_attributes:
+    #     for attribute2 in relation2_attributes:
+    #         if attribute1 == attribute2:
+    #             unique_attributes.remove(attribute1)
     for row in relationData1[1:]:
-        for column_index in index_list:
-            currentValue = row[column_index]
-            mapping.append(currentValue)
-        results.append(mapping)
-        mapping = [] # clear to contain new data
-
-    # print(results)
+        if row in relationData2[1:]:
+            relationData1.remove(row)
+    
+    results = relationData1
     return results
+
+    # # Get the index of unique attributes(columns) from relationData1
+    # index_list = []
+    # for column in relationData1[0]:
+    #     for attribute in unique_attributes:
+    #         if column == attribute:
+    #             index = relationData1[0].index(column)
+    #             index_list.append(index)
+    
+    # # Read the 2-D array(relationData1) row by row
+    # mapping = [] # temporal row
+    # for row in relationData1[1:]:
+    #     for column_index in index_list:
+    #         currentValue = row[column_index]
+    #         mapping.append(currentValue)
+    #     results.append(mapping)
+    #     mapping = [] # clear to contain new data
+
+    # # print(results)
+    # return results
 
 # CROSS PRODUCT FUNCTION
 # "relationData1" parameter should be a 2-D array
