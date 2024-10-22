@@ -75,10 +75,20 @@ def main():
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
 
-    #natJoin_result = natJoinFunction(ACTORS, PAY)
-    #print(natJoin_result)
-    #project_result = projectFunction(natJoin_result, 'ANO')
-    #print(project_result)
+    Faculty = [['Class','Dept','Position'],
+               [5,'CSE','Assistant Professor'],
+               [5,'CSE','Assistant Professor'],
+               [6,'EE','Assistant Professor'],
+               [6,'EE','Assistant Professor']]
+    proj_result = projectFunction(Faculty, 'Position')
+    # print(proj_result)
+
+    # natJoin_result = natJoinFunction(ACTORS, PAY)
+    # print(natJoin_result)
+    # print("")
+    # project_result = projectFunction(natJoin_result, 'ANO')
+    # print(project_result)
+
     # testOne = ['1','5','6','8','9', 'word']
     # testTwo = ['1','2','4','8','9']
     # print(intersectFunction(testOne, testTwo))
@@ -99,15 +109,15 @@ def main():
     # difference_left_right = differnceFunction(result_left, result_right)
     # print(difference_left_right)
 
-    # COURSES = [['CID','Course','Dept'],
-    #            ['CS01','Database','CS'],
-    #            ['ME01','Mechanics','ME'],
-    #            ['EE01','Electronics','EE']]
-    # HoD = [['Dept','Head'],
-    #        ['CS','Alex'],
-    #        ['ME','Maya'],
-    #        ['EE','Mira']]
-    # result_inner = natJoinFunction(COURSES, HoD)
+    COURSES = [['CID','Course','Dept'],
+               ['CS01','Database','CS'],
+               ['ME01','Mechanics','ME'],
+               ['EE01','Electronics','EE']]
+    HoD = [['Dept','Head'],
+           ['CS','Alex'],
+           ['ME','Maya'],
+           ['EE','Mira']]
+    result_inner = natJoinFunction(COURSES, HoD)
     # print(result_inner)
 
     # result_inner = natJoinFunction(ACTORS, PAY)
@@ -335,11 +345,14 @@ def projectFunction(relationData, attribute):
 
     # Read the 2-D array(relationData) row by row
     mapping = [] # temporal row
+    duplicate_check = [] # temporal row
     for row in relationData[1:]:
         for column_index in index_list:
             currentValue = row[column_index]
-            mapping.append(currentValue)
-        results.append(mapping)
+            if currentValue not in duplicate_check:
+                mapping.append(currentValue)
+                duplicate_check.append(currentValue)
+                results.append(mapping)
         mapping = [] # Clear to contain new data
     
     # print(results) # Uncomment this to test this function
