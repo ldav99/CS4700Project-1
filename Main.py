@@ -29,9 +29,9 @@ def main():
     global PAY 
     global MOVIES
     global ACTORS
-    PAY = './PAY.csv'
-    MOVIES = './MOVIES.csv'
-    ACTORS = './ACTORS.csv'
+    PAY = './data/PAY.csv'
+    MOVIES = './data/MOVIES.csv'
+    ACTORS = './data/ACTORS.csv'
 
 #Reformat the datasets to 2D arrays for functions
     PAY = reformat_to_2Darray(PAY)
