@@ -60,7 +60,7 @@ def main():
 
 
     testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
-    print(f'TEST QUERY: testQ')
+    print(f'TEST QUERY: {testQ}')
     print(callFunction(testQ))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
@@ -72,7 +72,7 @@ def main():
     # print(selectFunction(PAY, 'Payment', '>', 70)) # Test SELECT
     # print(selectFunction(PAY, 'ANO', '=', 'A4')) # Test SELECT
     # print(projectFunction(PAY, 'ANO'))
-    print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
+    #print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
     # intersectFunction(PAY, MOVIES)
     # differnceFunction(PAY, MOVIES)
     # xProdFunction(PAY, MOVIES)
