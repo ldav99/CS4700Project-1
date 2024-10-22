@@ -54,7 +54,7 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    queryTwo = parseQuery(queryList[0])
+    queryTwo = parseQuery(queryList[2])
     print(f'{queryTwo}:')
     print(callFunction(queryTwo))
 
@@ -68,7 +68,7 @@ def main():
     # funTwo = callFunction(testQ)
     # # print(f'TEST QUERY: {testQ}')
     # # print(callFunction(testQ))
-    print(f'ONE {funOne}')
+    #print(f'ONE {funOne}')
     # print(f'TWO {funTwo}')
     # print('HERE-----------')
     # print(differnceFunction(funOne, funTwo))
@@ -176,8 +176,18 @@ def splitTheList(splitList, splitChar):
 #Get the relations that the two queries use
     firstrelation = len(firstHalf)
     thefirstRelation = firstHalf[firstrelation-1]
+#Check for natural join
+    if firstHalf[firstrelation-2] == '*':
+        joinRelationOne = firstHalf[firstrelation - 3]
+        joinedRelation = natJoinFunction(joinRelationOne, thefirstRelation)
+        thefirstRelation = joinedRelation
     secondrelation = len(secondHalf)
     thesecondRelation = secondHalf[secondrelation-1]
+#Check for natural join
+    if secondHalf[secondrelation-2] == '*':
+        joinRelationOne = secondHalf[secondrelation - 3]
+        joinedRelation = natJoinFunction(joinRelationOne, thesecondRelation)
+        thesecondRelation = joinedRelation
 
     return firstHalf, secondHalf, thefirstRelation, thesecondRelation
 
@@ -237,6 +247,11 @@ def callFunction(inputQuery):
         firstHalf.extend(splitList)
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
+        #Check for natural join
+        if firstHalf[firstrelation-2] == '*':
+            joinRelationOne = firstHalf[firstrelation - 3]
+            joinedRelation = natJoinFunction(joinRelationOne, thefirstRelation)
+            thefirstRelation = joinedRelation
         
         return analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
@@ -427,7 +442,7 @@ def natJoinFunction(relationData1, relationData2):
     
     # Condition check to be natural join
     if len(commonAttributes) == 0:
-        print("natJoinFunction::There is no common attributes between two relations.")
+        print(f"natJoinFunction::There is no common attributes between two relations.")
         return ValueError
 
     # Extract the indices of common attributes in both relations
