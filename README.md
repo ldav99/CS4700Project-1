@@ -9,6 +9,9 @@ Jinho Nam and Luke Davidson
 
 ## Implemented Operators/Queries
 All the queires start by calling parseQuery() then callFunction(). callFunction is the main part where depending on what is in the query, it calls that function.
+parseQuery() - Takes in an input query and strips all symbols besides any operators that would be important to a query. Returns the query but with spaces instead of symbols.
+callFunction() - Takes in half(or all depending on how long) of a query and looks if it needs to call a SELECT, PROJECT or both. Returns a 2d array with the results
+
 * SELECT - 
 * PROJECT - 
 * INTERSECT - 
