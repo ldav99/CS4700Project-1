@@ -54,7 +54,7 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    queryTwo = parseQuery(queryList[1])
+    queryTwo = parseQuery(queryList[3])
     print(f'{queryTwo}:')
     print(callFunction(queryTwo))
 
@@ -83,31 +83,7 @@ def main():
     proj_result = projectFunction(Faculty, 'Position')
     # print(proj_result)
 
-    #natJoin_result = natJoinFunction(ACTORS, PAY)
-    # print(natJoin_result)
-    # print("")
-    #project_result = projectFunction(natJoin_result, 'ANO')
-    #print(project_result)
 
-    # testOne = ['1','5','6','8','9', 'word']
-    # testTwo = ['1','2','4','8','9']
-    # print(intersectFunction(testOne, testTwo))
-    # print(selectFunction(PAY, 'Payment', '>', 70)) # Test SELECT
-    # print(selectFunction(PAY, 'Payment', '>=', 70)) # Test SELECT
-    # print(selectFunction(PAY, 'Payment', '<', 60)) # Test SELECT
-    # print(selectFunction(PAY, 'Payment', '<=', 60)) # Test SELECT
-    # print(selectFunction(PAY, 'Payment', '=', 1)) # Test SELECT
-    # print(selectFunction(PAY, 'ANO', '=', 'A4')) # Test SELECT
-    # print(projectFunction(PAY, 'ANO'))
-    # print(projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')) # Test PROJECT & SELECT
-    # intersectFunction(PAY, MOVIES)
-    # print(differnceFunction(PAY, MOVIES))
-    # result_left = projectFunction(selectFunction(PAY, 'Payment', '>', 70), 'ANO')
-    # print(result_left)
-    # result_right = projectFunction(selectFunction(PAY, 'Payment', '<', 60), 'ANO')
-    # print(result_right)
-    # difference_left_right = differnceFunction(result_left, result_right)
-    # print(difference_left_right)
 
     COURSES = [['CID','Course','Dept'],
                ['CS01','Database','CS'],
