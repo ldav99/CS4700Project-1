@@ -3,7 +3,6 @@
 #Project 1
 
 import ast
-import copy
 import csv
 import operator
 import string
@@ -72,34 +71,6 @@ def main():
     # print('HERE-----------')
     # print(differnceFunction(funOne, funTwo))
 
-    # print(selectFunction(PAY, ['Payment'], '>', 70))
-    #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
-
-    Faculty = [['Class','Dept','Position'],
-               [5,'CSE','Assistant Professor'],
-               [5,'CSE','Assistant Professor'],
-               [6,'EE','Assistant Professor'],
-               [6,'EE','Assistant Professor']]
-    proj_result = projectFunction(Faculty, 'Position')
-    # print(proj_result)
-
-    COURSES = [['CID','Course','Dept'],
-               ['CS01','Database','CS'],
-               ['ME01','Mechanics','ME'],
-               ['EE01','Electronics','EE']]
-    HoD = [['Dept','Head'],
-           ['CS','Alex'],
-           ['ME','Maya'],
-           ['EE','Mira']]
-    result_inner = natJoinFunction(COURSES, HoD)
-    # print(result_inner)
-
-    union_left = projectFunction(selectFunction(PAY, 'Payment', '>', 90), 'ANO')
-    #print(union_left)
-    union_right = projectFunction(selectFunction(ACTORS, 'ANAME', '=', 'L Rivers'), 'ANO')
-    #print(union_right)
-    union_left_right = unionFunction(union_left, union_right)
-    #print(union_left_right)
 
 ######################################################################################################################
 
