@@ -8,15 +8,15 @@ Jinho Nam and Luke Davidson
 - Run `Main.py`
 
 ## Implemented Operators/Queries
-    * SELECT
-       - This will call 
-    * PROJECT
-    * INTERSECT
-    * JOIN
-    * NATURAL JOIN
-    * UNION
-    * DIFFERENCE
-    * CROSS PRODUCT
+All the queires start by calling parseQuery() then callFunction(). callFunction is the main part where depending on what is in the query, it calls that function.
+* SELECT - 
+* PROJECT - 
+* INTERSECT - 
+* JOIN - 
+* NATURAL JOIN - 
+* UNION - 
+* DIFFERENCE - 
+* CROSS PRODUCT - 
 
 
 ## Screenshots 
@@ -27,3 +27,19 @@ Jinho Nam and Luke Davidson
     (underlined blue line is the left query)
 ![Left-side-of-UNION](./images/left-query-of-union-operator.png)
 ## Output
+```
+SELE_{Payment > 70} (PAY):
+[['ANO', 'MNO', 'Payment'], ['A1', 'M1', 79], ['A1', 'M2', 80], ['A2', 'M2', 83], ['A2', 'M3', 98], ['A2', 'M4', 96], ['A3', 'M2', 74], ['A3', 'M3', 98], ['A4', 'M2', 75], ['A4', 'M3', 85], ['A5', 'M1', 99], ['A6', 'M2', 77], ['A6', 'M3', 95]]
+
+
+PROJ_{ANO} (ACTORS * PAY):
+[['ANO'], ['A1'], ['A2'], ['A3'], ['A4'], ['A5'], ['A6']]
+
+
+(PROJ_{ANO} (SELE_{Payment > 70} (PAY))) - (PROJ_{ANO} (SELE_{Payment < 60} (PAY))) :
+[['ANO'], ['A1'], ['A2'], ['A3']]
+
+
+(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME = 'L Rivers'} (ACTORS))):
+[['ANO'], ['A2'], ['A3'], ['A5'], ['A6'], ['A1']]
+```
