@@ -83,11 +83,11 @@ def main():
     proj_result = projectFunction(Faculty, 'Position')
     # print(proj_result)
 
-    # natJoin_result = natJoinFunction(ACTORS, PAY)
+    #natJoin_result = natJoinFunction(ACTORS, PAY)
     # print(natJoin_result)
     # print("")
-    # project_result = projectFunction(natJoin_result, 'ANO')
-    # print(project_result)
+    #project_result = projectFunction(natJoin_result, 'ANO')
+    #print(project_result)
 
     # testOne = ['1','5','6','8','9', 'word']
     # testTwo = ['1','2','4','8','9']
@@ -178,6 +178,12 @@ def analyzeQuery(queryHalf, splitList, relations, relation):
             return halfResult
         else:
             return selectResults
+    elif 'PROJ' in queryHalf:
+        wordIndex = queryHalf.index('PROJ')
+        projAttribute = queryHalf[wordIndex + 1]
+        halfResult =  projectFunction(relation, projAttribute)
+        return halfResult
+
 
 #Split the lsit based on what charcter is in the list
 def splitTheList(splitList, splitChar, relations):
