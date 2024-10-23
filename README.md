@@ -9,6 +9,7 @@ Jinho Nam and Luke Davidson
 
 ## Implemented Operators/Queries
     * SELECT
+       - This will call 
     * PROJECT
     * INTERSECT
     * JOIN
@@ -16,12 +17,6 @@ Jinho Nam and Luke Davidson
     * UNION
     * DIFFERENCE
     * CROSS PRODUCT
-    
-    - Some of the queries work on relational algebra format, such as
-        > SELE_{Payment > 70} (PAY)
-        > (PROJ_{ANO} (SELE_{Payment > 90} (PAY)))
-          This is the left side of the union operator, which is 
-          (PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME=’Swanson’} (ACTORS)))
 
 
 ## Screenshots 
