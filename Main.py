@@ -83,8 +83,6 @@ def main():
     proj_result = projectFunction(Faculty, 'Position')
     # print(proj_result)
 
-
-
     COURSES = [['CID','Course','Dept'],
                ['CS01','Database','CS'],
                ['ME01','Mechanics','ME'],
@@ -96,16 +94,12 @@ def main():
     result_inner = natJoinFunction(COURSES, HoD)
     # print(result_inner)
 
-    # result_inner = natJoinFunction(ACTORS, PAY)
-    # print(result_inner)
-    # result_outer = projectFunction(result_inner, 'ANO')
-    # print(result_outer)
-    # xProdFunction(PAY, MOVIES)
-    # unionFunction(PAY, MOVIES)
-    # natJoinFunction('MOVIES.csv', 'PAY.csv') 
-    # joinFunction(MOVIES, PAY, "MNO", "MNO", "=") # has an issue in select()
-    # joinFunction(Student, Subjects, "Std", "Class", "=")
-    #print(natJoinFunction(Courses, HoD))
+    union_left = projectFunction(selectFunction(PAY, 'Payment', '>', 90), 'ANO')
+    print(union_left)
+    union_right = projectFunction(selectFunction(ACTORS, 'ANAME', '=', 'L Rivers'), 'ANO')
+    print(union_right)
+    union_left_right = unionFunction(union_left, union_right)
+    print(union_left_right)
 
 ######################################################################################################################
 
