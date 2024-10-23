@@ -4,6 +4,7 @@ Jinho Nam and Luke Davidson
 
 ## How to run the program
 - Clone this repository
+- Write any queries in RAQueries.txt
 - Run `Main.py`
 
 ## Implemented Operators/Queries
@@ -15,16 +16,6 @@ Jinho Nam and Luke Davidson
     * UNION
     * DIFFERENCE
     * CROSS PRODUCT
-
-    - All of the above operators work individually based on hard-coded queries, such as 
-        > selectFunction(PAY, ['Payment'], '>', '70'), 
-        > projectFunction(PAY, 'ANO')
-        > intersectFunction(PAY, MOVIES)
-        > differnceFunction(PAY, MOVIES)
-        > xProdFunction(PAY, MOVIES)
-        > unionFunction(PAY, MOVIES)
-        > natJoinFunction(MOVIES, PAY) 
-        > joinFunction(MOVIES, PAY, "MNO", "MNO", "=")
     
     - Some of the queries work on relational algebra format, such as
         > SELE_{Payment > 70} (PAY)
