@@ -35,9 +35,9 @@ Jinho Nam and Luke Davidson
 
 ## Screenshots 
 - Select operator in relational algebra
-![SELECT-relational-algebra](./select-operator.png)
+![SELECT-relational-algebra](./images/select-operator.png)
 
 - Left side of union operator in relational algebra
     (underlined blue line is the left query)
-![Left-side-of-UNION](./left-query-of-union-operator.png)
+![Left-side-of-UNION](./images/left-query-of-union-operator.png)
 ## Output
