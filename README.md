@@ -31,12 +31,9 @@ callFunction() - Takes in half(or all depending on how long) of a query and look
 
 
 ## Screenshots 
-- Select operator in relational algebra
-![SELECT-relational-algebra](./images/select-operator.png)
+- All 4 example queries working output to RAoutput.csv
+![SELECT-relational-algebra](part3.png)
 
-- Left side of union operator in relational algebra
-    (underlined blue line is the left query)
-![Left-side-of-UNION](./images/left-query-of-union-operator.png)
 ## Output
 ```
 SELE_{Payment > 70} (PAY):
