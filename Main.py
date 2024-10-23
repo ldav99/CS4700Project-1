@@ -2,90 +2,122 @@
 #CS4700
 #Project 1
 
-
+import ast
 import copy
 import csv
 import operator
 import string
 
-
+#Main
 def main():
+#Open the RAqueries file and count the number of lines
     queryList = []
     queryFile = open('RAQueries.txt', 'r')
     lines = len(queryFile.readlines())
     queryFile.close()
 
-    # Re-Open file to read contents
+#Re-Open file to read contents and put them in a list
     queryFile = open('RAQueries.txt', 'r')
 
-    for i in range(1,4+1):
-        query  = str(queryFile.readline())
+    for i in range(1,lines+1):
+        query = str(queryFile.readline())
+        query = query.strip('\n')
         queryList.append(query)
     queryFile.close()
 
-    #print(projectFunction('PAY.csv', 'MNO'))
-    #print(unionFunction('',''))
-
-    # Call parse function on all of the queries
-    # for i in range(0,len(queryList)):
-    #     queryList[i] = queryList[i].strip('\n')
-    #     queryList[i] = parseQuery(queryList[i])
-
-    #print(queryList)
-    #callFunction(queryList[0])
-
-    # testOne = ['1','5','6','8','9', 'word']
-    # testTwo = ['1','2','4','8','9']
-
-    # print(intersectFunction(testOne, testTwo))
-
-    #Hardcoding arguments for now
-
-    # Open the specifed file
+#Set global variables for all the datasets to be used in dictionaries
     global PAY 
     global MOVIES
     global ACTORS
-    PAY = './PAY.csv'
-    MOVIES = './MOVIES.csv'
-    ACTORS = './ACTORS.csv'
+    PAY = './data/PAY.csv'
+    MOVIES = './data/MOVIES.csv'
+    ACTORS = './data/ACTORS.csv'
 
+#Reformat the datasets to 2D arrays for functions
     PAY = reformat_to_2Darray(PAY)
     MOVIES = reformat_to_2Darray(MOVIES)
     ACTORS = reformat_to_2Darray(ACTORS)
 
+    outputFile = open('RAoutput.csv', 'w')
 
-    query = parseQuery("(PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME ='Rivers'} (ACTORS)))")
-    print(f'{query}:')
-    print(callFunction(query))
+#Run program on all queries and print to RAoutput.csv (COMMENTED FOR NOW)
+    for i in range(0,len(queryList)):
+        parsedQuery = parseQuery(queryList[i])
+        outputFile.write(f'{queryList[i]}:\n')
+        outputFile.write(f'{callFunction(parsedQuery)}\n\n\n')
 
-    queryTwo = parseQuery("SELE_{Payment > 70} (PAY)")
-    print(f'{queryTwo}:')
-    print(callFunction(queryTwo))
+    outputFile.close()
+
+############################################################################################################################
+
+    # query = parseQuery(queryList[3])
+    # print(f'{query}:')
+    # print(callFunction(query))
+
+    # queryTwo = parseQuery(queryList[3])
+    # print(f'{queryTwo}:')
+    # print(callFunction(queryTwo))
+
+    # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
+    # print(f'TEST QUERY: {testQ}')
+    # print(callFunction(testQ))
+    # testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
+    # funOne = callFunction(testTwo)
+    # testQ = parseQuery('(PROJ_{ANO} (SELE_{Payment < 60} (PAY))')
+    # funTwo = callFunction(testQ)
+    # # print(f'TEST QUERY: {testQ}')
+    # # print(callFunction(testQ))
+    # print(f'ONE {funOne}')
+    # print(f'TWO {funTwo}')
+    # print('HERE-----------')
+    # print(differnceFunction(funOne, funTwo))
 
     # print(selectFunction(PAY, ['Payment'], '>', 70))
     #print(projectFunction(intersectFunction(ACTORS, PAY), "ANO"))
-              
-    # selectFunction(PAY, ['Payment'], '>', '70')
-    #projectFunction(PAY, 'ANO')
-    # intersectFunction(PAY, MOVIES)
-    # differnceFunction(PAY, MOVIES)
-    # xProdFunction(PAY, MOVIES)
-    # unionFunction(PAY, MOVIES)
-    # natJoinFunction(MOVIES, PAY) 
-    # joinFunction(MOVIES, PAY, "MNO", "MNO", "=")
-    # joinFunction(Student, Subjects, "Std", "Class", "=")
 
+    Faculty = [['Class','Dept','Position'],
+               [5,'CSE','Assistant Professor'],
+               [5,'CSE','Assistant Professor'],
+               [6,'EE','Assistant Professor'],
+               [6,'EE','Assistant Professor']]
+    proj_result = projectFunction(Faculty, 'Position')
+    # print(proj_result)
 
-#Results need to be stored in output file
-    # outputFile = open('RAoutput.csv', 'w')
-    # for i in range(0,len(queryList)):
-    #     outputFile.write(f'{queryList[i]}\n')
-    #     outputFile.write(f'{callFunction(queryList[i])}\n\n')
-    
-    #outputFile.close()
+    COURSES = [['CID','Course','Dept'],
+               ['CS01','Database','CS'],
+               ['ME01','Mechanics','ME'],
+               ['EE01','Electronics','EE']]
+    HoD = [['Dept','Head'],
+           ['CS','Alex'],
+           ['ME','Maya'],
+           ['EE','Mira']]
+    result_inner = natJoinFunction(COURSES, HoD)
+    # print(result_inner)
+
+    union_left = projectFunction(selectFunction(PAY, 'Payment', '>', 90), 'ANO')
+    #print(union_left)
+    union_right = projectFunction(selectFunction(ACTORS, 'ANAME', '=', 'L Rivers'), 'ANO')
+    #print(union_right)
+    union_left_right = unionFunction(union_left, union_right)
+    #print(union_left_right)
+
+######################################################################################################################
 
 def reformat_to_2Darray(csvfile):
-    data = list(csv.reader(open(csvfile)))
+    # data = list(csv.reader(open(csvfile)))
+    with open(csvfile, 'r') as f:
+        reader = csv.reader(f)
+        data = []
+        for row in reader:
+            parsed_row = [] # A list to store the converted values
+            for cell in row:
+                # Convert each cell to its original data type
+                try:
+                    parsed_row.append(ast.literal_eval(cell))
+                # If can't convert, leave it as string
+                except:
+                    parsed_row.append(cell)
+            data.append(parsed_row)
     
     return data
 
@@ -99,6 +131,66 @@ def parseQuery(inputQuery):
         inputQuery = inputQuery.replace(char, ' ')
 
     return(inputQuery)
+
+#Analyze query function
+def analyzeQuery(queryHalf, splitList, relations, relation):
+    if 'SELE' in queryHalf:
+        wordIndex = queryHalf.index('SELE')
+        attributes = queryHalf[wordIndex + 1]
+        comparison = queryHalf[wordIndex + 2]
+        value = queryHalf[wordIndex + 3]
+        addCSV = relations.get(relation)
+        selectResults = selectFunction(addCSV, attributes, comparison, value)
+        if 'PROJ' in queryHalf:
+            wordIndex = queryHalf.index('PROJ')
+            projAttribute = queryHalf[wordIndex + 1]
+            halfResult =  projectFunction(selectResults, projAttribute)
+            return halfResult
+        else:
+            return selectResults
+    elif 'PROJ' in queryHalf:
+        wordIndex = queryHalf.index('PROJ')
+        projAttribute = queryHalf[wordIndex + 1]
+        halfResult =  projectFunction(relation, projAttribute)
+        return halfResult
+
+
+#Split the lsit based on what charcter is in the list
+def splitTheList(splitList, splitChar, relations):
+    wordIndex = splitList.index(splitChar)
+
+    firstHalf = splitList[:wordIndex]
+    secondHalf = splitList[wordIndex+1:]
+
+#Get the relations that the two queries use
+    firstrelation = len(firstHalf)
+    thefirstRelation = firstHalf[firstrelation-1]
+#Check for natural join
+    if firstHalf[firstrelation-2] == '*':
+        joinRelationOne = firstHalf[firstrelation - 3]
+        joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thefirstRelation))
+        thefirstRelation = joinedRelation
+    secondrelation = len(secondHalf)
+    thesecondRelation = secondHalf[secondrelation-1]
+#Check for natural join
+    if secondHalf[secondrelation-2] == '*':
+        joinRelationOne = secondHalf[secondrelation - 3]
+        joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thesecondRelation))
+        thesecondRelation = joinedRelation
+
+    listCharOne = firstHalf[firstrelation-3]
+    listCharTwo = secondHalf[secondrelation-3]
+
+#Check for First inital last name
+    if len(listCharOne) == 1 and listCharOne.isalpha():
+        firstHalf[firstrelation-2] = firstHalf[firstrelation-3] + ' ' + firstHalf[firstrelation-2]
+        firstHalf.remove(firstHalf[firstrelation-3])
+    elif len(listCharTwo) == 1 and listCharTwo.isalpha():
+        secondHalf[secondrelation-2] = secondHalf[secondrelation-3] + ' ' + secondHalf[secondrelation-2]
+        secondHalf.remove(secondHalf[secondrelation-3])
+
+
+    return firstHalf, secondHalf, thefirstRelation, thesecondRelation
 
 #This is the main function that depending on what is in the query calls the other functions
 def callFunction(inputQuery):
@@ -115,77 +207,61 @@ def callFunction(inputQuery):
     firstHalf = []
     secondHalf = []
 
-    selectResults = []
-    secondHalfResult = []
+    firstrelation = []
+    thefirstRelation = []
+    secondrelation = []
+    thesecondRelation = []
 
     for word in splitQuery:
         splitList.append(word)
 
 
-#If there is a union split the list before and after the U
+#If there is a union or difference or intersection split the list before and after the U
     if 'U' in splitList:
-        wordIndex = splitList.index('U')
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'U', relations)
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
-        firstHalf = splitList[:wordIndex]
-        secondHalf = splitList[wordIndex+1:]
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
 
-        firstHalfResult = []
+        return unionFunction(firstHalfResult, secondHalfResult)
+#Difference
+    elif '-' in splitList:
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-', relations)
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
-#Get the relations that the two queries use
-        firstrelation = len(firstHalf)
-        thefirstRelation = firstHalf[firstrelation-1]
-        secondrelation = len(secondHalf)
-        thesecondRelation = secondHalf[secondrelation-1]
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
+
+        return differnceFunction(firstHalfResult, secondHalfResult)
+#Intersection
+    elif 'INTE' in splitList:
+        firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'INTE', relations)
+        firstHalfResult = analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
+
+        if len(secondHalf) != 0:
+            secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
+
+        return intersectFunction(firstHalfResult, secondHalfResult)
     else:
+#Else it doesnt need anything above so it just needs to check for select and project
         firstHalf.extend(splitList)
         firstrelation = len(firstHalf)
         thefirstRelation = firstHalf[firstrelation-1]
+        #Check for natural join
+        if firstHalf[firstrelation-2] == '*':
+            joinRelationOne = firstHalf[firstrelation - 3]
+            joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thefirstRelation))
+            thefirstRelation = joinedRelation
+        
+        return analyzeQuery(firstHalf, splitList, relations, thefirstRelation)
 
-
-    if 'SELE' in firstHalf:
-        wordIndex = splitList.index('SELE')
-        attributes = []
-        attributes.append(splitList[wordIndex + 1])
-        comparison = splitList[wordIndex + 2]
-        value = splitList[wordIndex + 3]
-        addCSV = relations.get(thefirstRelation) 
-
-        #print(addCSV, attribute, comparison, value)
-        selectResults = selectFunction(addCSV, attributes, comparison, value)
-
-        if 'PROJ' in firstHalf:
-            wordIndex = splitList.index('PROJ')
-            projAttribute = splitList[wordIndex + 1]
-            firstHalfResult =  projectFunction(selectResults, projAttribute)
-            print(firstHalfResult)
-        else:
-            return selectResults
-    
-    if len(secondHalf) != 0:
-        if 'SELE' in secondHalf:
-            wordIndex = secondHalf.index('SELE')
-            attributes = secondHalf[wordIndex + 1]
-            comparison = secondHalf[wordIndex + 2]
-            value = secondHalf[wordIndex + 3]
-            addCSV = relations.get(thesecondRelation) 
-
-            #print(addCSV, attributes, comparison, value)
-            selectResults = selectFunction(addCSV, attributes, comparison, value)
-            #print(selectResults)
-
-            if 'PROJ' in secondHalf:
-                wordIndex = splitList.index('PROJ')
-                projAttribute = splitList[wordIndex + 1]
-                #print(selectResults)
-                secondHalfResult =  projectFunction(selectResults, projAttribute)
-
-    #return unionFunction(firstHalfResult, secondHalfResult)
 
 # SELECT FUNCTION
 # "relationData" parameter should be a 2-D array
-# "attributes" parameter should be a 1-D array (e.g. ['Payment'])
+# "attributes" parameter should be a string
 # returns 2-D array
-def selectFunction(relationData, attributes, comparison, value):
+def selectFunction(relationData, attribute, comparison, value):
     # A 2-D array to return for this function
     results = []
 
@@ -195,11 +271,11 @@ def selectFunction(relationData, attributes, comparison, value):
         "<=": operator.le,
         "=": operator.eq,
         "!=": operator.ne,
-        ">": operator.le,
+        ">": operator.gt,
         ">=": operator.ge
     }
 
-    # Check if "comparision" is a operator in the dictionary
+    # Check if "comparison" is a operator in the dictionary
     # Otherwise, throw an error
     try:
         operation = operators.get(comparison)
@@ -207,32 +283,30 @@ def selectFunction(relationData, attributes, comparison, value):
         raise ValueError(f"selectFunction()::invalid operator -> {comparison}")
 
     # Get the index of the target attribute(column)
-    index_list = []
-    target_attributes = []
     for column in relationData[0]: # attribute row = relationaData[0]
-        for attribute in attributes:
-            if column == attribute:
-                target_attributes.append(column)
-                index = relationData[0].index(column)
-                index_list.append(index)
+        if column == attribute:
+            column_index = relationData[0].index(column)            
     results.append(relationData[0])
 
     # Read the 2-D array(relationData) row by row
-    # mapping = [] # temporal row
     for row in relationData[1:]:
-        for column_index in index_list:
-            criterionValue = value
-            currentValue = row[column_index]
-            # Perform the operation. If the operation is true,
-            # then add the current value to the "results" list
-            if operation(int(criterionValue), int(currentValue)):
-                # mapping.append(currentValue) 
+        criterionValue = value
+        currentValue = row[column_index]
+
+        # If the data type of currentValue is int
+        if isinstance(currentValue, int):
+            if (comparison == '<') or (comparison == '<='):
+                if operation(int(currentValue), int(criterionValue)):
+                    results.append(row)
+            elif (comparison == '>') or (comparison == '>=') :
+                if operation(int(currentValue), int(criterionValue)):
+                    results.append(row)
+            elif operation(int(currentValue), int(criterionValue)):
                 results.append(row)
-            # else:
-            #     mapping.append("")
-            #     results.append(mapping)
-        # results.extend(mapping)
-        # mapping = [] # Clear to contain new data
+        # Else the data type of currentValue is str
+        else:
+            if operation(criterionValue, currentValue):
+                results.append(row)
     
     # print(results) # Uncomment this to test this function
     return results
@@ -259,11 +333,14 @@ def projectFunction(relationData, attribute):
 
     # Read the 2-D array(relationData) row by row
     mapping = [] # temporal row
+    duplicate_check = [] # temporal row
     for row in relationData[1:]:
         for column_index in index_list:
             currentValue = row[column_index]
-            mapping.append(currentValue)
-        results.append(mapping)
+            if currentValue not in duplicate_check:
+                mapping.append(currentValue)
+                duplicate_check.append(currentValue)
+                results.append(mapping)
         mapping = [] # Clear to contain new data
     
     # print(results) # Uncomment this to test this function
@@ -356,7 +433,10 @@ def joinFunction(relationData1, relationData2, attribute1, attribute2, compariso
 def natJoinFunction(relationData1, relationData2):
     # A 2-D array to return
     results = []
-    
+
+    # Do cross-product of them
+    cross_product = xProdFunction(relationData1, relationData2)    
+
     # Extract common attributes between two relations
     commonAttributes = []
     for attribute in relationData1[0]:
@@ -366,24 +446,49 @@ def natJoinFunction(relationData1, relationData2):
     
     # Condition check to be natural join
     if len(commonAttributes) == 0:
-        print("natJoinFunction::There is no common attributes between two relations.")
+        print("natJoinFunction::Natural Join Condition violated")
+        print(f"-> There is no common attributes between two relations. {relationData1},{relationData2}")
         return ValueError
 
-    # Extract the index of common attribute
-    indexList = []
-    for commonAttribute in commonAttributes:
-        index = relationData1[0].index(commonAttribute)
-        indexList.append(index)
-    # print(indexList)
+    # Add the attributes of the result of natural join to results[]
+    result_attributes = relationData1[0]
 
-    intersection = intersectFunction(relationData1, relationData2)
-    diff1 = differnceFunction(relationData1, intersection)
-    diff2 = differnceFunction(relationData2, intersection)
+    # Add unique attributes to results[]
+    for attribute in relationData2[0]:
+        if attribute not in commonAttributes:
+            result_attributes.append(attribute)
+    results.append(result_attributes)
 
-    # zip pairs each row from diff1 with corresponding row from diff2
-    combined = [row1 + row2 for row1, row2, in zip(diff1, diff2)]
-    # zip pairs each row from intersection with corresponding row from combined
-    results = [row1 + row2 for row1, row2, in zip(intersection, combined)]
+    # index list of the common attributes in both relations
+    indices_relation_1 = []
+    indices_relation_2 = []
+    for attribute in commonAttributes:
+        indices_relation_1.append(relationData1[0].index(attribute))
+    for attribute in commonAttributes:
+        indices_relation_2.append(relationData2[0].index(attribute))
+    
+    # Compare rows from both relations to find common attribute values
+    # If common attribute values are equal, combine rows
+    for row1 in relationData1[1:]:
+        for row2 in relationData2[1:]:
+            # Check if common attribute values match
+            attributes_equal = True
+            for i, j in zip(indices_relation_1, indices_relation_2):
+                # Compare the value of the common attribute in row1 with the value in row2
+                if row1[i] != row2[j]:
+                    attributes_equal = False
+                    break
+            # If commmon attribute values are equal, combine rows
+            if attributes_equal:
+                # new_row = a copy of row1
+                new_row = row1[:]
+                # Add values from row2 that aren't part of the common attributes
+                for k in range(len(row2)):
+                    if k not in indices_relation_2:
+                        new_row.append(row2[k])
+                results.append(new_row)
+        
+
     
     # https://www.tutorialspoint.com/dbms/database_joins.htm   
     # print(results)
@@ -426,35 +531,20 @@ def unionFunction(relationData1, relationData2):
 def differnceFunction(relationData1, relationData2):
     # An 2-D array to return
     results = []
-    
-    # Extract unique attribute(s) from relationData1
-    relation1_attributes = relationData1[0]
-    relation2_attributes = relationData2[0]
-    unique_attributes = copy.deepcopy(relationData1[0]) # deep copy the value(array)
-    for attribute1 in relation1_attributes:
-        for attribute2 in relation2_attributes:
-            if attribute1 == attribute2:
-                unique_attributes.remove(attribute1)
-    results.append(unique_attributes)
 
-    # Get the index of unique attributes(columns) from relationData1
-    index_list = []
-    for column in relationData1[0]:
-        for attribute in unique_attributes:
-            if column == attribute:
-                index = relationData1[0].index(column)
-                index_list.append(index)
-    
-    # Read the 2-D array(relationData1) row by row
-    mapping = [] # temporal row
-    for row in relationData1[1:]:
-        for column_index in index_list:
-            currentValue = row[column_index]
-            mapping.append(currentValue)
-        results.append(mapping)
-        mapping = [] # clear to contain new data
+    # Remove duplicated elements in relationData1
+    unique_relationData1 = []
+    unique_relationData1.append(relationData1[0])
+    for element in relationData1[1:]:
+        if element not in unique_relationData1:
+            unique_relationData1.append(element)
 
-    # print(results)
+    # Perform relationData1 - relationData2
+    for row in unique_relationData1[1:]:
+        if row in relationData2[1:]:
+            unique_relationData1.remove(row)
+    
+    results = unique_relationData1
     return results
 
 # CROSS PRODUCT FUNCTION
