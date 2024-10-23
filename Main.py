@@ -41,12 +41,12 @@ def main():
     outputFile = open('RAoutput.csv', 'w')
 
 #Run program on all queries and print to RAoutput.csv (COMMENTED FOR NOW)
-    # for i in range(0,len(queryList)):
-    #     parsedQuery = parseQuery(queryList[i])
-    #     outputFile.write(f'{queryList[i]}:\n')
-    #     outputFile.write(f'{callFunction(parsedQuery)}\n\n\n')
+    for i in range(0,len(queryList)):
+        parsedQuery = parseQuery(queryList[i])
+        outputFile.write(f'{queryList[i]}:\n')
+        outputFile.write(f'{callFunction(parsedQuery)}\n\n\n')
 
-    #outputFile.close()
+    outputFile.close()
 
 ############################################################################################################################
 
@@ -54,9 +54,9 @@ def main():
     # print(f'{query}:')
     # print(callFunction(query))
 
-    queryTwo = parseQuery(queryList[3])
-    print(f'{queryTwo}:')
-    print(callFunction(queryTwo))
+    # queryTwo = parseQuery(queryList[3])
+    # print(f'{queryTwo}:')
+    # print(callFunction(queryTwo))
 
     # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
     # print(f'TEST QUERY: {testQ}')
@@ -95,11 +95,11 @@ def main():
     # print(result_inner)
 
     union_left = projectFunction(selectFunction(PAY, 'Payment', '>', 90), 'ANO')
-    print(union_left)
+    #print(union_left)
     union_right = projectFunction(selectFunction(ACTORS, 'ANAME', '=', 'L Rivers'), 'ANO')
-    print(union_right)
+    #print(union_right)
     union_left_right = unionFunction(union_left, union_right)
-    print(union_left_right)
+    #print(union_left_right)
 
 ######################################################################################################################
 
@@ -178,6 +178,18 @@ def splitTheList(splitList, splitChar, relations):
         joinedRelation = natJoinFunction(relations.get(joinRelationOne), relations.get(thesecondRelation))
         thesecondRelation = joinedRelation
 
+    listCharOne = firstHalf[firstrelation-3]
+    listCharTwo = secondHalf[secondrelation-3]
+
+#Check for First inital last name
+    if len(listCharOne) == 1 and listCharOne.isalpha():
+        firstHalf[firstrelation-2] = firstHalf[firstrelation-3] + ' ' + firstHalf[firstrelation-2]
+        firstHalf.remove(firstHalf[firstrelation-3])
+    elif len(listCharTwo) == 1 and listCharTwo.isalpha():
+        secondHalf[secondrelation-2] = secondHalf[secondrelation-3] + ' ' + secondHalf[secondrelation-2]
+        secondHalf.remove(secondHalf[secondrelation-3])
+
+
     return firstHalf, secondHalf, thefirstRelation, thesecondRelation
 
 #This is the main function that depending on what is in the query calls the other functions
@@ -212,7 +224,7 @@ def callFunction(inputQuery):
         if len(secondHalf) != 0:
             secondHalfResult = analyzeQuery(secondHalf, splitList, relations, thesecondRelation)
 
-        #return unionFunction(firstHalfResult, secondHalfResult)
+        return unionFunction(firstHalfResult, secondHalfResult)
 #Difference
     elif '-' in splitList:
         firstHalf, secondHalf, thefirstRelation, thesecondRelation = splitTheList(splitList,'-', relations)
