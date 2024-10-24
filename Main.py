@@ -3,6 +3,7 @@
 #Project 1
 
 import ast
+import copy
 import csv
 import operator
 import string
@@ -70,6 +71,26 @@ def main():
     # print(f'TWO {funTwo}')
     # print('HERE-----------')
     # print(differnceFunction(funOne, funTwo))
+
+    """ First line of query in RAqueries.txt """
+    parsedFirstQuery = parseQuery(queryList[0])
+    firstQuery = callFunction(parsedFirstQuery)
+    # print(firstQuery)
+
+    """ Second line of query in RAqueries.txt """
+    parsedSecondQuery = parseQuery(queryList[1])
+    secondQuery = callFunction(parsedSecondQuery)
+    # print(secondQuery)
+
+    """ Third line of query in RAqueries.txt """
+    parsedThirdQuery = parseQuery(queryList[2])
+    thirdQuery = callFunction(parsedThirdQuery)
+    # print(thirdQuery)
+
+    """ Fourth line of query in RAqueries.txt """
+    parsedFourthQuery = parseQuery(queryList[3])
+    fourthQuery = callFunction(parsedFourthQuery)
+    # print(fourthQuery)
 
 
 ######################################################################################################################
@@ -405,9 +426,6 @@ def natJoinFunction(relationData1, relationData2):
     # A 2-D array to return
     results = []
 
-    # Do cross-product of them
-    cross_product = xProdFunction(relationData1, relationData2)    
-
     # Extract common attributes between two relations
     commonAttributes = []
     for attribute in relationData1[0]:
@@ -422,7 +440,7 @@ def natJoinFunction(relationData1, relationData2):
         return ValueError
 
     # Add the attributes of the result of natural join to results[]
-    result_attributes = relationData1[0]
+    result_attributes = copy.deepcopy(relationData1[0])
 
     # Add unique attributes to results[]
     for attribute in relationData2[0]:
@@ -442,7 +460,7 @@ def natJoinFunction(relationData1, relationData2):
     # If common attribute values are equal, combine rows
     for row1 in relationData1[1:]:
         for row2 in relationData2[1:]:
-            # Check if common attribute values match
+            # Check if common attribute values match(set default to true)
             attributes_equal = True
             for i, j in zip(indices_relation_1, indices_relation_2):
                 # Compare the value of the common attribute in row1 with the value in row2
