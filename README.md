@@ -15,7 +15,7 @@ All the queries start by calling `parseQuery()` then `callFunction()`. `callFunc
    Takes in half(or all depending on how long) of a query and looks if it needs to call a SELECT, PROJECT or both. Returns a 2d array with the results
 
     * `SELECT` <br />
-      - parameters(4): 2-D array, attribute(column) name, binary perator, operand <br />
+      - parameters(4): 2-D array, attribute(column) name, binary operator, operand <br />
       - return(1): 2-D array(result relation)
     * `PROJECT` <br />
       - parameters(2): 2-D array, attribute(column) name <br />
@@ -24,7 +24,7 @@ All the queries start by calling `parseQuery()` then `callFunction()`. `callFunc
       - parameters(2): 2-D array(relation1), 2-D array(relation2)
       - return(1): 2-D array(result relation)
     * `JOIN` <br />
-      - parameters(5): 2-D array(relation1), 2-D array(relation2), ttribute1(column) name, attribute2(column) name, logical perator <br />
+      - parameters(5): 2-D array(relation1), 2-D array(relation2), attribute1(column) name, attribute2(column) name, logical operator <br />
       - return(1): 2-D array(result relation)
     * `NATURAL JOIN` <br /> 
       - parameters(2): 2-D array(relation1), 2-D array(relation2) <br /
