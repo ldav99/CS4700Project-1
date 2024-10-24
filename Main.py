@@ -48,55 +48,7 @@ def main():
 
     outputFile.close()
 
-############################################################################################################################
-
-    # query = parseQuery(queryList[3])
-    # print(f'{query}:')
-    # print(callFunction(query))
-
-    # queryTwo = parseQuery(queryList[3])
-    # print(f'{queryTwo}:')
-    # print(callFunction(queryTwo))
-
-    # testQ = parseQuery('(SELE_{Payment < 60} (PAY))')
-    # print(f'TEST QUERY: {testQ}')
-    # print(callFunction(testQ))
-    # testTwo = parseQuery('(SELE_{Payment < 60} (PAY))')
-    # funOne = callFunction(testTwo)
-    # testQ = parseQuery('(PROJ_{ANO} (SELE_{Payment < 60} (PAY))')
-    # funTwo = callFunction(testQ)
-    # # print(f'TEST QUERY: {testQ}')
-    # # print(callFunction(testQ))
-    # print(f'ONE {funOne}')
-    # print(f'TWO {funTwo}')
-    # print('HERE-----------')
-    # print(differnceFunction(funOne, funTwo))
-
-    """ First line of query in RAqueries.txt """
-    parsedFirstQuery = parseQuery(queryList[0])
-    firstQuery = callFunction(parsedFirstQuery)
-    # print(firstQuery)
-
-    """ Second line of query in RAqueries.txt """
-    parsedSecondQuery = parseQuery(queryList[1])
-    secondQuery = callFunction(parsedSecondQuery)
-    # print(secondQuery)
-
-    """ Third line of query in RAqueries.txt """
-    parsedThirdQuery = parseQuery(queryList[2])
-    thirdQuery = callFunction(parsedThirdQuery)
-    # print(thirdQuery)
-
-    """ Fourth line of query in RAqueries.txt """
-    parsedFourthQuery = parseQuery(queryList[3])
-    fourthQuery = callFunction(parsedFourthQuery)
-    # print(fourthQuery)
-
-
-######################################################################################################################
-
 def reformat_to_2Darray(csvfile):
-    # data = list(csv.reader(open(csvfile)))
     with open(csvfile, 'r') as f:
         reader = csv.reader(f)
         data = []
@@ -126,6 +78,8 @@ def parseQuery(inputQuery):
 
 #Analyze query function
 def analyzeQuery(queryHalf, splitList, relations, relation):
+#Go through the inputed query and check if it has SELE, PROJ or both
+# if it does call the respective function with its attributes
     if 'SELE' in queryHalf:
         wordIndex = queryHalf.index('SELE')
         attributes = queryHalf[wordIndex + 1]
