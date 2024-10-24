@@ -87,17 +87,19 @@ All the queries start by calling `parseQuery()` then `callFunction()`. `callFunc
 ```
 ```
 3. (PROJ_{ANO} (SELE_{Payment > 70} (PAY))) - (PROJ_{ANO} (SELE_{Payment < 60} (PAY))) :
-[['ANO'], 
-['A1'], 
-['A2'], 
-['A3']]
+
+   [['ANO'], 
+    ['A1'], 
+    ['A2'], 
+    ['A3']]
 ```
 ```
 4. (PROJ_{ANO} (SELE_{Payment > 90} (PAY))) U (PROJ_{ANO} (SELE_{ANAME = 'L Rivers'} (ACTORS))):
-[['ANO'], 
-['A2'], 
-['A3'], 
-['A5'], 
-['A6'], 
-['A1']]
+
+   [['ANO'], 
+    ['A2'], 
+    ['A3'], 
+    ['A5'], 
+    ['A6'], 
+    ['A1']]
 ```
