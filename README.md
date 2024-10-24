@@ -15,29 +15,29 @@ All the queries start by calling `parseQuery()` then `callFunction()`. `callFunc
    Takes in half(or all depending on how long) of a query and looks if it needs to call a SELECT, PROJECT or both. Returns a 2d array with the results
 
     * `SELECT` <br />
-      - parameters(4): 2-D array, attribute(column) name, binary operator, operand <br />
-      - return(1): 2-D array(result relation)
+      - parameters(4): `2-D array`, `attribute(column) name`, `binary operator`, `operand`
+      - return(1): `2-D array(result relation)`
     * `PROJECT` <br />
-      - parameters(2): 2-D array, attribute(column) name <br />
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array`, `attribute(column) name` 
+      - return(1): `2-D array(result relation)`
     * `INTERSECT` <br />
-      - parameters(2): 2-D array(relation1), 2-D array(relation2)
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array(relation1)`, `2-D array(relation2)`
+      - return(1): `2-D array(result relation)`
     * `JOIN` <br />
-      - parameters(5): 2-D array(relation1), 2-D array(relation2), attribute1(column) name, attribute2(column) name, logical operator <br />
-      - return(1): 2-D array(result relation)
+      - parameters(5): `2-D array(relation1)`, `2-D array(relation2)`, `attribute1(column) name`, `attribute2(column) name`, `logical operator`
+      - return(1): `2-D array(result relation)`
     * `NATURAL JOIN` <br /> 
-      - parameters(2): 2-D array(relation1), 2-D array(relation2) <br /
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array(relation1)`, `2-D array(relation2)`
+      - return(1): `2-D array(result relation)`
     * `UNION` <br />
-      - parameters(2): 2-D array(relation1), 2-D array(relation2) <br /
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array(relation1)`, `2-D array(relation2)`
+      - return(1): `2-D array(result relation)`
     * `DIFFERENCE` <br />
-      - parameters(2): 2-D array(relation1), 2-D array(relation2) <br /
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array(relation1)`, `2-D array(relation2)`
+      - return(1): `2-D array(result relation)`
     * `CROSS PRODUCT` <br />
-      - parameters(2): 2-D array(relation1), 2-D array(relation2) <br /
-      - return(1): 2-D array(result relation)
+      - parameters(2): `2-D array(relation1)`, `2-D array(relation2)`
+      - return(1): `2-D array(result relation)`
 
 ## Screenshots 
 1. First line of query in `RAqueries.txt`: <br />
